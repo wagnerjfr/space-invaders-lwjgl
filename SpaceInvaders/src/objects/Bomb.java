@@ -37,7 +37,7 @@ public class Bomb extends AbstractMoveableEntity {
 
 	public void reload() {
 		isLaunched = false;
-		setX(0);
-		setY(0);
+		setX(-10);
+		setY(-10);
 	}
 }

@@ -1,12 +1,16 @@
 package objects;
 
+import java.util.ArrayList;
+
 import entities.AbstractMoveableEntity;
 import entities.Entity;
 import entities.ObjectType;
+import static entities.WorldVariables.HEIGHT;
 
 public abstract class AbstractFigther extends AbstractMoveableEntity {
 	
-	protected Bomb bomb;
+	protected ArrayList<Bomb> listBomb;
+	protected int numberOfBombs;
 
 	public AbstractFigther(double x, double y, double width, double height, float speed, ObjectType type) {
 		super(x, y, width, height, speed, type);
@@ -15,8 +19,10 @@ public abstract class AbstractFigther extends AbstractMoveableEntity {
 	@Override
 	public void draw() {
 		super.draw();
-		if (isBombLaunched())
-			bomb.draw();
+
+		for (Bomb bomb : listBomb)
+			if (bomb.isLaunched())
+				bomb.draw();
 	}
 		
 	public void moveRight() {
@@ -34,15 +40,43 @@ public abstract class AbstractFigther extends AbstractMoveableEntity {
 	public boolean bombIntersects(Entity entity) {
 		boolean intersect = false;
 		
-		if (bomb.intersects(entity)) {
-			bomb.reload();
-			intersect = true;
-		}
+		for (Bomb bomb : listBomb)
+			if (bomb.intersects(entity)) {
+				bomb.reload();
+				intersect = true;
+				System.out.println("hit");
+			}
 		
 		return intersect;
 	}
 	
-	public boolean isBombLaunched() {
-		return bomb.isLaunched();
+	public void createBombs(int number, double x, double y, double width, double height, float speed, ObjectType type) {
+		numberOfBombs = number;
+		
+		listBomb = new ArrayList<Bomb>(numberOfBombs);
+		
+		for (int i = 0; i < numberOfBombs; i++) {
+			Bomb bomb = new Bomb(x, y, width, height, speed, type);
+			listBomb.add(bomb);
+		}
+	}
+	
+	public void updateBomb(int delta, ObjectType type) {
+		for (Bomb bomb : listBomb) {
+			if (bomb.isLaunched()) {
+				bomb.update(delta);
+				
+				switch (type) {
+				case ROCKET:
+					if (bomb.getY() <= 0)
+						bomb.reload();
+					break;
+				case BOMB:
+					if (bomb.getY() >= HEIGHT)
+						bomb.reload();
+					break;
+				}
+			}
+		}
 	}
 }

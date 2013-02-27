@@ -99,14 +99,8 @@ public abstract class AbstractEntity implements Entity {
 
 	@Override
 	public boolean intersects(Entity entity) {
-/*		hitbox.setBounds((int) x, (int) y, (int) width, (int) height);
-		return hitbox.intersects(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());*/
-		
-		if (x + width >= entity.getX() && x + width <= entity.getX() + entity.getWidth()
-				&& y + height >= entity.getY() && y + height <= entity.getY() + entity.getHeight())
-			return true;
-		else
-			return false;
+		hitbox.setBounds((int) x, (int) y, (int) width, (int) height);
+		return hitbox.intersects(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
 	}
 
 	@Override

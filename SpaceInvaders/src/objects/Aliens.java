@@ -45,7 +45,7 @@ public class Aliens {
 				break;
 			}
 			
-			Enemy enemy = new Enemy(0 + cont*gap, 10 + row*gap, 32, 32, .15f, objType);
+			Enemy enemy = new Enemy(0 + cont*gap, 32 + row*gap, 32, 32, .15f, objType);
 			aliens.add(enemy);
 			cont++;
 		}
@@ -95,16 +95,13 @@ public class Aliens {
 				if (player.bombIntersects(enemy)) {
 					collision = true;
 					enemy.hit();
-					player.bomb.reload();
 					totalNumberOfAliens--;
-					System.out.println(totalNumberOfAliens);
 					break;
 				}
 				break;
 			case BOMB_X_PLAYER:
 				if (enemy.bombIntersects(player)) {
 					collision = true;
-					enemy.bomb.reload();
 					break;
 				}
 				break;
