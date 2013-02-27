@@ -8,7 +8,8 @@ public class Player extends AbstractFigther {
 	public Player(double x, double y, double width, double height, float speed, ObjectType type) {
 		super(x, y, width, height, speed, type);
 		
-		bomb = new Bomb(16, 32, .7f, ObjectType.ROCKET);
+		//bomb = new Bomb(16, 32, .7f, ObjectType.ROCKET);
+		createBombs(3, x, y, 32, 32, .5f, ObjectType.ROCKET);
 	}
 	
 	public void updateTime(int delta) {
@@ -19,17 +20,33 @@ public class Player extends AbstractFigther {
 		else if (x + width > WIDTH)
 			x = WIDTH - width; //WIDTH (tela) - width(objeto)
 		
-		if (isBombLaunched()) {
-			bomb.update(delta);
-			
-			if (bomb.getY() <= 0)
-				bomb.reload();
-		}
+		updateBomb(delta, ObjectType.ROCKET);
 	}
 
 	public void launchBomb() {
-		if (!isBombLaunched()) {
+		int i;
+		
+		if ((i = getDispoBomb()) != -1) {
+			Bomb bomb = listBomb.get(i);
 			bomb.launch(x, y - height/2);
 		}
+	}
+	
+	/**
+	 * Funcao que verifica a disponibilidade de bombas para lancar
+	 * @return
+	 */
+	private int getDispoBomb() {
+		int num = -1;
+		for (int i = 0; i < listBomb.size(); i++) {
+			Bomb bomb = listBomb.get(i);
+			
+			if (!bomb.isLaunched()) {
+				num = i;
+				System.out.println(i);
+				break;
+			}
+		}
+		return num;	
 	}
 }

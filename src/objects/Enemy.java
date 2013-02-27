@@ -12,7 +12,8 @@ public class Enemy extends AbstractFigther {
 	public Enemy(double x, double y, double width, double height, float speed, ObjectType type) {
 		super(x, y, width, height, speed, type);
 		
-		bomb = new Bomb(16, 32, 0.2f, ObjectType.BOMB);
+		//bomb = new Bomb(16, 32, 0.2f, ObjectType.BOMB);
+		createBombs(1, x, y, 32, 32, .2f, ObjectType.BOMB);
 	}
 	
 	public void updateTime(int delta, long systime) {
@@ -37,43 +38,35 @@ public class Enemy extends AbstractFigther {
 				moveLeft();
 			
 			//Cria tempo para lancar a bomba
-			if (!isBombLaunched() && !reload) {
+			if (!listBomb.get(0).isLaunched() && !reload) {
 				createTimeBombLaunch(systime);
 				reload = true;
 			}
 		}
 		
 		//Logica para o lancamento das bombas
-		if (isBombLaunched()) {
-			bomb.update(delta);
-			
-			if (bomb.getY() >= HEIGHT) {
-				bomb.reload();
-			}
-		}
-		else {
-			if ((timeToLaunch < systime) && reload) {
-				launchBomb(systime);
-				reload = false;
-			}
-		}
+		updateBomb(delta, ObjectType.BOMB);
 		
+		if ((timeToLaunch < systime) && reload) {
+			launchBomb(systime);
+			reload = false;
+		}
 	}
 
 	private void createTimeBombLaunch(long systime) {
 		long rand = (long) (Math.random() * 10); //[0 a 9]
 		timeToLaunch = systime + rand * 1000;
-		//System.out.println(rand);
+//		System.out.println(rand);
 	}
 	
 	private void launchBomb(long systime) {
-		bomb.launch(x, y + height/2);
+		listBomb.get(0).launch(x, y + height/2);
 	}
 	
 	void hit() {
 		isMoving = false;
 		setDX(0);
 		setDY(0);
-		setLocation(640, 480);
+		setLocation(WIDTH, HEIGHT);
 	}
 }

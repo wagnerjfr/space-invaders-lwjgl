@@ -45,6 +45,7 @@ public class InvadersMain {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle("Space Invaders 2D");
+			//Display.setInitialBackground(.5f, .5f, .5f);
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -77,12 +78,19 @@ public class InvadersMain {
 	}
 	
 	private void input() {
+		while (Keyboard.next()) {
+		    if (Keyboard.getEventKeyState()) {
+		        switch (Keyboard.getEventKey()) {
+		             case Keyboard.KEY_SPACE:
+		            	 player.launchBomb();
+		            	 break;
+		        }
+		    }
+		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 			player.moveLeft();
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 			player.moveRight();
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			player.launchBomb();
 		} else {
 			player.standBy();
 		}
@@ -110,10 +118,9 @@ public class InvadersMain {
 		
 		//Verify Collision
 		//Rocket x Enemy
-		if (player.isBombLaunched())
-			if (aliens.collison(player, CollisionType.ROCKET_X_ENEMY)) {
-				
-			}
+		if (aliens.collison(player, CollisionType.ROCKET_X_ENEMY)) {
+			
+		}
 
 		//Bomb x Player OR Enemy x Player
 		if (aliens.collison(player, CollisionType.BOMB_X_PLAYER)) {
