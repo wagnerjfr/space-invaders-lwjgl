@@ -13,9 +13,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class AbstractEntity implements Entity {
 	
-	private static int IMAGE_WIDTH = 32;
-	private static int IMAGE_HEIGTH = 32;
-
 	protected double x, y, width, height;
 	protected Rectangle hitbox = new Rectangle();
 	protected ObjectType type;
@@ -122,11 +119,11 @@ public abstract class AbstractEntity implements Entity {
 			glTexCoord2d(0, 0);
 			glVertex2d(0, 0);
 			glTexCoord2d(1, 0);
-			glVertex2d(IMAGE_WIDTH, 0);
+			glVertex2d(width, 0);
 			glTexCoord2d(1, 1);
-			glVertex2d(IMAGE_WIDTH, IMAGE_HEIGTH);
+			glVertex2d(width, height);
 			glTexCoord2d(0, 1);
-			glVertex2d(0, IMAGE_HEIGTH);
+			glVertex2d(0, height);
 		glEnd();
 		glLoadIdentity();
 		

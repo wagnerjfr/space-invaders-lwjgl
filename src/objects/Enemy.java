@@ -12,8 +12,7 @@ public class Enemy extends AbstractFigther {
 	public Enemy(double x, double y, double width, double height, float speed, ObjectType type) {
 		super(x, y, width, height, speed, type);
 		
-		//bomb = new Bomb(16, 32, 0.2f, ObjectType.BOMB);
-		createBombs(1, x, y, 32, 32, .2f, ObjectType.BOMB);
+		createBombs(1, x, y, 10, 20, .2f, ObjectType.BOMB);
 	}
 	
 	public void updateTime(int delta, long systime) {

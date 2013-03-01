@@ -8,8 +8,7 @@ public class Player extends AbstractFigther {
 	public Player(double x, double y, double width, double height, float speed, ObjectType type) {
 		super(x, y, width, height, speed, type);
 		
-		//bomb = new Bomb(16, 32, .7f, ObjectType.ROCKET);
-		createBombs(3, x, y, 32, 32, .5f, ObjectType.ROCKET);
+		createBombs(3, x, y, 10, 20, .7f, ObjectType.ROCKET);
 	}
 	
 	public void updateTime(int delta) {
