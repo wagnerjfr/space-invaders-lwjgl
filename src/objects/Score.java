@@ -1,13 +1,8 @@
 package objects;
 
-import java.awt.Font;
-import java.text.SimpleDateFormat;
-
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
-
 import static entities.WorldVariables.*;
+
+import java.text.SimpleDateFormat;
 
 public class Score {
 	
@@ -29,15 +24,13 @@ public class Score {
 	private boolean isGameOver;
 	private long timeToPrint;
 	
-	private static UnicodeFont fontText;
-	private static UnicodeFont fontNum;
-	private static UnicodeFont fontWarn;
-	
 	private final int gap = 100;
+	
+	private WarnHit warnHit = null;
 
 	public Score(long time) {
+		Printer.setUpFonts();
 		initialize(time);
-		setUpFonts();
 		setNewStage(time);
 	}
 
@@ -80,92 +73,51 @@ public class Score {
 		/*
 		 * LIVES
 		 */
-		writeText(10, 0, lives);
-		writeNum(10 + 50, 0, String.valueOf(numLives));
+		Printer.writeText(10, 0, lives);
+		Printer.writeNum(10 + 50, 0, String.valueOf(numLives));
 		
 		/*
 		 * POINTS
 		 */
-		writeText(gap, 0, points);
-		writeNum(gap + 60, 0, String.valueOf(numPoints));
+		Printer.writeText(gap, 0, points);
+		Printer.writeNum(gap + 60, 0, String.valueOf(numPoints));
 		
 		/*
 		 * ROCKETS
 		 */
-		writeText(2*gap, 0, rockets);
-		writeNum(2*gap + 75, 0, String.valueOf(numRockets));
+		Printer.writeText(2*gap, 0, rockets);
+		Printer.writeNum(2*gap + 75, 0, String.valueOf(numRockets));
 		
 		/*
 		 * STAGE
 		 */
-		writeText(4*gap, 0, stage);
-		writeNum(4*gap + 55, 0, String.valueOf(numStage));
+		Printer.writeText(4*gap, 0, stage);
+		Printer.writeNum(4*gap + 55, 0, String.valueOf(numStage));
 		
 		/*
 		 * TIME
 		 */
-		writeText(5*gap, 0, time);
+		Printer.writeText(5*gap, 0, time);
 		if (isGameOver)
-			writeNum(5*gap + 50, 0, getTime(gameOverTime - gameStartTime));
+			Printer.writeNum(5*gap + 50, 0, getTime(gameOverTime - gameStartTime));
 		else
-			writeNum(5*gap + 50, 0, getTime(newTime - gameStartTime));
+			Printer.writeNum(5*gap + 50, 0, getTime(newTime - gameStartTime));
 		
 		/*
 		 * New Stage message
 		 */
 		if (isNewStage) {
 			if (timeToPrint > newTime)
-				writeWarn(WIDTH/2 - 50, HEIGHT/2, "Stage " + numStage);
+				Printer.writeWarn(WIDTH/2 - 50, HEIGHT/2, "Stage " + numStage);
 			else 
 				isNewStage = false;
 		}
+		
+		if (warnHit != null) {
+			warnHit.print(newTime);
+		}
 	}
 
-	private void writeText(float x, float y, String text) {
-		fontText.drawString(x, y, text);
-	}
-
-	private void writeNum(float x, float y, String text) {
-	    fontNum.drawString(x, y, text);
-	}
-	
-	public void writeWarn(float x, float y, String text) {
-		fontWarn.drawString(x, y, text);
-	}
-	
-    @SuppressWarnings("unchecked")
-	private static void setUpFonts() {
-        Font awtFontText = new Font("Verdana", Font.BOLD, 14);
-        fontText = new UnicodeFont(awtFontText);
-        fontText.getEffects().add(new ColorEffect(java.awt.Color.yellow));
-        fontText.addAsciiGlyphs();
-        try {
-        	fontText.loadGlyphs();
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-
-        Font awtFontNum = new Font("Verdana", Font.BOLD, 14);
-        fontNum = new UnicodeFont(awtFontNum);
-        fontNum.getEffects().add(new ColorEffect(java.awt.Color.white));
-        fontNum.addAsciiGlyphs();
-        try {
-        	fontNum.loadGlyphs();
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-
-        Font awtFontWarn = new Font("Verdana", Font.BOLD, 18);
-        fontWarn = new UnicodeFont(awtFontWarn);
-        fontWarn.getEffects().add(new ColorEffect(java.awt.Color.orange));
-        fontWarn.addAsciiGlyphs();
-        try {
-        	fontWarn.loadGlyphs();
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-    }
-    
     private String getTime(long timePlayed) {
     	return (new SimpleDateFormat("mm:ss:SSS")).format(timePlayed);   
     }
@@ -187,8 +139,34 @@ public class Score {
 	
 	public void writeGameOver() {
 		if (isGameOver) {
-			writeWarn(WIDTH/2 - 80, HEIGHT/2 - 50, "GAME OVER!");
-			writeText(WIDTH/2 - 170, HEIGHT/2, "Would you like to try again? (Y)es (N)o ");
+			Printer.writeWarn(WIDTH/2 - 80, HEIGHT/2 - 50, "GAME OVER!");
+			Printer.writeText(WIDTH/2 - 170, HEIGHT/2, "Would you like to try again? (Y)es (N)o ");
+		}
+	}
+	
+	public void addWarnHit(double x, double y, String text, long newTime) {
+		warnHit = new WarnHit((float)x, (float)y, text, newTime);
+	}
+	
+	/**
+	 * 
+	 * @author Wagner
+	 */
+	private class WarnHit {
+		float x, y;
+		String text;
+		long timeToShow;
+		
+		public WarnHit(float x, float y, String text, long timeToShow) {
+			this.x = x;
+			this.y = y;
+			this.text = text;
+			this.timeToShow = timeToShow + 1000;
+		}
+		
+		public void print(long newtime) {
+			if (timeToShow > newtime)
+				Printer.writeText(x, y, text);
 		}
 	}
 }
