@@ -30,7 +30,12 @@ public class InvadersMain {
 		while (isRunnig) {
 			render();
 			input();
-			logic(getDelta());
+			if (score.isGameOver()) {
+				score.writeGameOver();
+			}
+			else {
+				logic(getDelta());
+			}
 			Display.update();
 			Display.sync(100);
 			
@@ -46,7 +51,6 @@ public class InvadersMain {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle("Space Invaders 2D");
-			//Display.setInitialBackground(.5f, .5f, .5f);
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -67,7 +71,7 @@ public class InvadersMain {
 	private void setUpEntities() {
 		player = new Player(320, 480-32, 32, 32, .2f, ObjectType.PLAYER);
 		score = new Score(getTime());
-		aliens = new Aliens(score.nextStage());
+		aliens = new Aliens(score.getNumStage());
 	}
 	
 	private void render() {
@@ -82,8 +86,17 @@ public class InvadersMain {
 		    if (Keyboard.getEventKeyState()) {
 		        switch (Keyboard.getEventKey()) {
 		             case Keyboard.KEY_SPACE:
-		            	 player.launchBomb();
-		            	 score.increaseRockets();
+		            	 if (!score.isGameOver()) {
+			            	 player.launchBomb();
+			            	 score.increaseRockets();
+		            	 }
+		            	 break;
+		             case Keyboard.KEY_Y:
+		     			 score.initialize(getTime());
+   		     			 aliens.createAliens(score.getNumStage());
+		            	 break;
+		             case Keyboard.KEY_N:
+		            	 isRunnig = false;
 		            	 break;
 		        }
 		    }
@@ -136,13 +149,13 @@ public class InvadersMain {
 		
 		//Next stage
 		if (aliens.getTotalNumberOfAliens() == 0) {
-			aliens.createAliens(score.nextStage());
+			score.setNewStage(getTime());
+			aliens.createAliens(score.getNumStage());
 		}
 		
 		// Game Over
-		if (aliens.getLowestEnemy() >= HEIGHT - IMAGE_HEIGHT) {
-			score.initialize(getTime());
-			aliens.createAliens(score.nextStage());
+		if ((aliens.getLowestEnemy() >= HEIGHT - IMAGE_HEIGHT) || (score.getNumLives() == 0)) {
+			score.setGameOver(getTime());
 		}
 	}
 
