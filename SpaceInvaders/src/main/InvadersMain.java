@@ -139,6 +139,7 @@ public class InvadersMain {
 		//Bomb x Player
 		if (aliens.collison(player, CollisionType.BOMB_X_PLAYER)) {
 			score.decreaseLives();
+			score.addWarnHit(player.getX(), player.getY() - 20, "Hit!!", getTime());
 		}
 
 		//Enemy x Player
