@@ -55,7 +55,6 @@ public class Enemy extends AbstractFigther {
 	private void createTimeBombLaunch(long systime) {
 		long rand = (long) (Math.random() * 10); //[0 a 9]
 		timeToLaunch = systime + rand * 1000;
-//		System.out.println(rand);
 	}
 	
 	private void launchBomb(long systime) {
@@ -67,5 +66,9 @@ public class Enemy extends AbstractFigther {
 		setDX(0);
 		setDY(0);
 		setLocation(WIDTH, HEIGHT);
+	}
+	
+	public boolean isMoving() {
+		return isMoving;
 	}
 }
