@@ -32,7 +32,7 @@ public class Player extends AbstractFigther {
 	}
 	
 	/**
-	 * Funcao que verifica a disponibilidade de bombas para lancar
+	 * Verify disponibility to launch new Rocket
 	 * @return
 	 */
 	private int getDispoBomb() {
@@ -42,7 +42,6 @@ public class Player extends AbstractFigther {
 			
 			if (!bomb.isLaunched()) {
 				num = i;
-				System.out.println(i);
 				break;
 			}
 		}

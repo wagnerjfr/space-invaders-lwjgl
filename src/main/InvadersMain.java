@@ -2,8 +2,8 @@ package main;
 
 import objects.Aliens;
 import objects.CollisionType;
-import objects.Enemy;
 import objects.Player;
+import objects.Score;
 
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
@@ -20,6 +20,7 @@ public class InvadersMain {
 	
 	private Player player;
 	private Aliens aliens;
+	private Score score; 
 	
 	public InvadersMain() {
 		setUpDisplay();
@@ -64,17 +65,16 @@ public class InvadersMain {
 	}
 
 	private void setUpEntities() {
-/*		bat = new Bat(10, 200, 32, 32, ObjectType.PLAYER);
-		ball = new Ball(200, 200, 32, 32, ObjectType.ENEMY1);
-		ball.setDX(-0.1);*/
 		player = new Player(320, 480-32, 32, 32, .2f, ObjectType.PLAYER);
-		aliens = new Aliens();
+		score = new Score(getTime());
+		aliens = new Aliens(score.nextStage());
 	}
 	
 	private void render() {
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		player.draw();
 		aliens.draw();
+		score.draw(getTime());
 	}
 	
 	private void input() {
@@ -83,6 +83,7 @@ public class InvadersMain {
 		        switch (Keyboard.getEventKey()) {
 		             case Keyboard.KEY_SPACE:
 		            	 player.launchBomb();
+		            	 score.increaseRockets();
 		            	 break;
 		        }
 		    }
@@ -119,19 +120,29 @@ public class InvadersMain {
 		//Verify Collision
 		//Rocket x Enemy
 		if (aliens.collison(player, CollisionType.ROCKET_X_ENEMY)) {
-			
+			score.increasePoints();
 		}
 
-		//Bomb x Player OR Enemy x Player
+		//Bomb x Player
 		if (aliens.collison(player, CollisionType.BOMB_X_PLAYER)) {
+			score.decreaseLives();
 		}
 
 		//Enemy x Player
 		if (aliens.collison(player, CollisionType.ENEMY_X_PLAYER)) {
+			score.increasePoints();
+			score.decreaseLives();
 		}
 		
+		//Next stage
 		if (aliens.getTotalNumberOfAliens() == 0) {
-			aliens.createAliens(2);
+			aliens.createAliens(score.nextStage());
+		}
+		
+		// Game Over
+		if (aliens.getLowestEnemy() >= HEIGHT - IMAGE_HEIGHT) {
+			score.initialize(getTime());
+			aliens.createAliens(score.nextStage());
 		}
 	}
 

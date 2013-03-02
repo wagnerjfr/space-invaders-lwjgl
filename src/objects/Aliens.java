@@ -7,7 +7,7 @@ import entities.ObjectType;
 public class Aliens {
 
 	private int totalNumberOfAliens;
-	private int numberOfAliensRow = 10;
+	private int numberOfAliensRow = 12;
 	private int gap = 40;
 	public static boolean isMovingRight = true;
 	public static boolean isMovingDown = false;
@@ -15,8 +15,8 @@ public class Aliens {
 	
 	private ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	
-	public Aliens() {
-		createAliens(1);
+	public Aliens(int stage) {
+		createAliens(stage);
 	}
 	
 	public void createAliens(int stage) {
@@ -121,5 +121,19 @@ public class Aliens {
 
 	public int getTotalNumberOfAliens() {
 		return totalNumberOfAliens;
+	}
+	
+	/*
+	 * Get the lowest enemy
+	 */
+	public double getLowestEnemy() {
+		double low = 0;
+		
+		for (Enemy enemy : aliens) {
+			if (enemy.isMoving() && (enemy.getY() > low))
+				low = enemy.getY();
+		}
+		
+		return low;
 	}
 }

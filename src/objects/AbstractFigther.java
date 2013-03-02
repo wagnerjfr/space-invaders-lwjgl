@@ -44,7 +44,6 @@ public abstract class AbstractFigther extends AbstractMoveableEntity {
 			if (bomb.intersects(entity)) {
 				bomb.reload();
 				intersect = true;
-				System.out.println("hit");
 			}
 		
 		return intersect;
