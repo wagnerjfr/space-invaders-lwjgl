@@ -4,6 +4,7 @@ import objects.Aliens;
 import objects.CollisionType;
 import objects.Player;
 import objects.Score;
+import objects.SoundManager;
 
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
@@ -25,6 +26,7 @@ public class InvadersMain {
 	public InvadersMain() {
 		setUpDisplay();
 		setUpOpenGL();
+		SoundManager.create();
 		setUpEntities();
 		setUpTimer();
 		while (isRunnig) {
@@ -43,6 +45,7 @@ public class InvadersMain {
 				isRunnig = false;
 			}
 		}
+		SoundManager.destroy();
 		Display.destroy();
 		System.exit(0);
 	}
@@ -54,6 +57,9 @@ public class InvadersMain {
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
+			SoundManager.destroy();
+			Display.destroy();
+			System.exit(1);
 		}
 	}
 
