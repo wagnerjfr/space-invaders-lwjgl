@@ -58,7 +58,7 @@ public class Enemy extends AbstractFigther {
 	}
 	
 	private void launchBomb(long systime) {
-		listBomb.get(0).launch(x, y + height/2);
+		listBomb.get(0).launch(x + 10, y + height/2);
 	}
 	
 	void hit() {

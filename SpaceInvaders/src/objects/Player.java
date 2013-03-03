@@ -27,7 +27,7 @@ public class Player extends AbstractFigther {
 		
 		if ((i = getDispoBomb()) != -1) {
 			Bomb bomb = listBomb.get(i);
-			bomb.launch(x, y - height/2);
+			bomb.launch(x + 10, y - height/2);
 		}
 	}
 	
