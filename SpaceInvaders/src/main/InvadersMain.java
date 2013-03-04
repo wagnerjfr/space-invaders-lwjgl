@@ -1,25 +1,35 @@
 package main;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
+import static entities.WorldVariables.HEIGHT;
+import static entities.WorldVariables.IMAGE_HEIGHT;
+import static entities.WorldVariables.WIDTH;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
 import objects.Aliens;
+import objects.Background;
 import objects.CollisionType;
 import objects.Player;
 import objects.Score;
 import objects.SoundManager;
 
-import org.lwjgl.*;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.*;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 import entities.ObjectType;
-import static org.lwjgl.opengl.GL11.*;
-import static entities.WorldVariables.*;
 
 public class InvadersMain {
 		
@@ -28,10 +38,8 @@ public class InvadersMain {
 	
 	private Player player;
 	private Aliens aliens;
-	private Score score; 
-	
-	private Texture texture;
-	private double texture_y = 0;
+	private Score score;
+	private Background background;
 	
 	public InvadersMain() {
 		setUpDisplay();
@@ -88,12 +96,12 @@ public class InvadersMain {
 		player = new Player(WIDTH/2, HEIGHT-42, 32, 32, .2f, ObjectType.PLAYER);
 		score = new Score(getTime());
 		aliens = new Aliens(score.getNumStage());
-		setBackgroundImage();
+		background = new Background();
 	}
 	
 	private void render() {
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		drawBackGround();
+		background.draw();
 		player.draw();
 		aliens.draw();
 		score.draw(getTime());
@@ -170,7 +178,7 @@ public class InvadersMain {
 		if (aliens.getTotalNumberOfAliens() == 0) {
 			score.setNewStage(getTime());
 			aliens.createAliens(score.getNumStage());
-			texture_y = 0;
+			background.resetY();
 		}
 		
 		// Game Over
@@ -179,32 +187,6 @@ public class InvadersMain {
 		}
 	}
 	
-	private void setBackgroundImage() {
-		try {
-			this.texture = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/images/fundo.png")));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void drawBackGround() {
-		texture.bind();
-		texture_y = texture_y - 0.01;
-		glTranslated(0, texture_y, 0);
-		glBegin(GL_QUADS);
-		glTexCoord2d(0, 0);
-		glVertex2d(0, 0);
-		glTexCoord2d(1, 0);
-		glVertex2d(texture.getImageWidth() + 90, 0);
-		glTexCoord2d(1, 1);
-		glVertex2d(texture.getImageWidth() + 90, texture.getImageHeight() + 90);
-		glTexCoord2d(0, 1);
-		glVertex2d(0, texture.getImageHeight() + 90);
-		glEnd();
-	}
-
 	public static void main(String[] args) {
 		
 		new InvadersMain();
