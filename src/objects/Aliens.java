@@ -7,16 +7,22 @@ import entities.ObjectType;
 public class Aliens {
 
 	private int totalNumberOfAliens;
-	private int numberOfAliensRow = 12;
-	private int gap = 40;
+	private int numberOfAliensRow = 10;
+	private int gap = 45;
 	public static boolean isMovingRight = true;
 	public static boolean isMovingDown = false;
 	private long moveDownTime = 0;
+	
+	private SoundManager explosion_Rocket_X_Enemy;
+	private SoundManager explosion_Bomb_X_Player;
 	
 	private ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	
 	public Aliens(int stage) {
 		createAliens(stage);
+		
+		explosion_Rocket_X_Enemy = new SoundManager(SoundType.EXPLOSION_ROCKET);
+		explosion_Bomb_X_Player = new SoundManager(SoundType.EXPLOSION_BOMB);
 	}
 	
 	public void createAliens(int stage) {
@@ -33,15 +39,24 @@ public class Aliens {
 				cont = 0;
 			}
 			
-			int rand = (int) (Math.random() * (2)); //[0 a 1]
+			int rand = (int) (Math.random() * (5)); //[0 a 4]
 			ObjectType objType;
 			
 			switch (rand + 1) {
 			case 1:
 				objType = ObjectType.ENEMY1;
 				break;
-			default:
+			case 2:
 				objType = ObjectType.ENEMY2;
+				break;
+			case 3:
+				objType = ObjectType.ENEMY3;
+				break;
+			case 4:
+				objType = ObjectType.ENEMY4;
+				break;
+			default:
+				objType = ObjectType.ENEMY5;
 				break;
 			}
 			
@@ -69,7 +84,7 @@ public class Aliens {
 	
 	private void moveDown(long systime) {
 		if (moveDownTime == 0)
-			moveDownTime = systime + 50;
+			moveDownTime = systime + 100;
 		
 		if (moveDownTime > systime)
 			for (Enemy enemy : aliens) {
@@ -93,23 +108,31 @@ public class Aliens {
 			switch(collisionType) {
 			case ROCKET_X_ENEMY:
 				if (player.bombIntersects(enemy)) {
-					collision = true;
 					enemy.hit();
-					totalNumberOfAliens--;
+					if (!enemy.isMoving()) {
+						collision = true;
+						totalNumberOfAliens--;
+						explosion_Rocket_X_Enemy.play();
+					}
 					break;
 				}
 				break;
 			case BOMB_X_PLAYER:
 				if (enemy.bombIntersects(player)) {
 					collision = true;
+					explosion_Bomb_X_Player.play();
 					break;
 				}
 				break;
 			case ENEMY_X_PLAYER:
-				if (enemy.intersects(player)) {
-					collision = true;
+				if (player.intersects(enemy)) {
 					enemy.hit();
-					totalNumberOfAliens--;
+					if (!enemy.isMoving()) {
+						collision = true;
+						totalNumberOfAliens--;
+						explosion_Rocket_X_Enemy.play();
+					}
+					explosion_Bomb_X_Player.play();
 					break;
 				}
 				break;

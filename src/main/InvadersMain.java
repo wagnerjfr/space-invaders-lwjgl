@@ -1,5 +1,10 @@
 package main;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import objects.Aliens;
 import objects.CollisionType;
 import objects.Player;
@@ -9,6 +14,8 @@ import objects.SoundManager;
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 import entities.ObjectType;
 import static org.lwjgl.opengl.GL11.*;
@@ -22,6 +29,9 @@ public class InvadersMain {
 	private Player player;
 	private Aliens aliens;
 	private Score score; 
+	
+	private Texture texture;
+	private double texture_y = 0;
 	
 	public InvadersMain() {
 		setUpDisplay();
@@ -39,7 +49,7 @@ public class InvadersMain {
 				logic(getDelta());
 			}
 			Display.update();
-			Display.sync(100);
+			Display.sync(250);
 			
 			if (Display.isCloseRequested()) {
 				isRunnig = false;
@@ -75,13 +85,15 @@ public class InvadersMain {
 	}
 
 	private void setUpEntities() {
-		player = new Player(320, 480-32, 32, 32, .2f, ObjectType.PLAYER);
+		player = new Player(WIDTH/2, HEIGHT-42, 32, 32, .2f, ObjectType.PLAYER);
 		score = new Score(getTime());
 		aliens = new Aliens(score.getNumStage());
+		setBackgroundImage();
 	}
 	
 	private void render() {
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		drawBackGround();
 		player.draw();
 		aliens.draw();
 		score.draw(getTime());
@@ -158,12 +170,39 @@ public class InvadersMain {
 		if (aliens.getTotalNumberOfAliens() == 0) {
 			score.setNewStage(getTime());
 			aliens.createAliens(score.getNumStage());
+			texture_y = 0;
 		}
 		
 		// Game Over
 		if ((aliens.getLowestEnemy() >= HEIGHT - IMAGE_HEIGHT) || (score.getNumLives() == 0)) {
 			score.setGameOver(getTime());
 		}
+	}
+	
+	private void setBackgroundImage() {
+		try {
+			this.texture = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/images/fundo.png")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void drawBackGround() {
+		texture.bind();
+		texture_y = texture_y - 0.01;
+		glTranslated(0, texture_y, 0);
+		glBegin(GL_QUADS);
+		glTexCoord2d(0, 0);
+		glVertex2d(0, 0);
+		glTexCoord2d(1, 0);
+		glVertex2d(texture.getImageWidth() + 90, 0);
+		glTexCoord2d(1, 1);
+		glVertex2d(texture.getImageWidth() + 90, texture.getImageHeight() + 90);
+		glTexCoord2d(0, 1);
+		glVertex2d(0, texture.getImageHeight() + 90);
+		glEnd();
 	}
 
 	public static void main(String[] args) {
