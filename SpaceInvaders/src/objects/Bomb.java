@@ -7,7 +7,7 @@ public class Bomb extends AbstractMoveableEntity {
 	
 	private boolean isLaunched = false;
 	
-	private SoundManager fireSound, explosionSound;
+	private SoundManager fireSound;
 
 	@SuppressWarnings("incomplete-switch")
 	public Bomb(double x, double y, double width, double height, float speed, ObjectType type) {
@@ -16,10 +16,6 @@ public class Bomb extends AbstractMoveableEntity {
 		switch (type) {
 		case ROCKET:
 			fireSound = new SoundManager(SoundType.LAUNCH_ROCKET);
-			explosionSound = new SoundManager(SoundType.EXPLOSION_ROCKET);
-			break;
-		case BOMB:
-			explosionSound = new SoundManager(SoundType.EXPLOSION_BOMB);
 			break;
 		}
 	}
@@ -48,9 +44,5 @@ public class Bomb extends AbstractMoveableEntity {
 		isLaunched = false;
 		setX(-10);
 		setY(-10);
-	}
-	
-	public void playExplosion() {
-		explosionSound.play();
 	}
 }

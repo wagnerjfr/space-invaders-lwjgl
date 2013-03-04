@@ -8,11 +8,21 @@ public class Enemy extends AbstractFigther {
 	private long timeToLaunch = 0;
 	private boolean reload = false;
 	private boolean isMoving = true;
+	private int numOfHits; 
 
 	public Enemy(double x, double y, double width, double height, float speed, ObjectType type) {
 		super(x, y, width, height, speed, type);
 		
 		createBombs(1, x, y, 10, 20, .2f, ObjectType.BOMB);
+		
+		numOfHits = 2;
+	}
+	
+	@Override
+	public void draw() {
+		super.draw();
+		
+		Printer.writeHits((float)x + 12, (float)y - 15, String.valueOf(numOfHits));
 	}
 	
 	public void updateTime(int delta, long systime) {
@@ -62,10 +72,13 @@ public class Enemy extends AbstractFigther {
 	}
 	
 	void hit() {
-		isMoving = false;
-		setDX(0);
-		setDY(0);
-		setLocation(WIDTH, HEIGHT);
+		numOfHits--;
+		if (numOfHits == 0) {
+			isMoving = false;
+			setDX(0);
+			setDY(0);
+			setLocation(WIDTH, HEIGHT);
+		}
 	}
 	
 	public boolean isMoving() {

@@ -38,7 +38,7 @@ public abstract class AbstractEntity implements Entity {
 		setTexture();
 	}
 	
-	private void  setTexture() {
+	private void setTexture() {
 		try {
 			this.texture = TextureLoader.getTexture("PNG", new FileInputStream(new File(type.location)));
 		} catch (FileNotFoundException e) {
@@ -126,6 +126,5 @@ public abstract class AbstractEntity implements Entity {
 			glVertex2d(0, height);
 		glEnd();
 		glLoadIdentity();
-		
 	}
 }

@@ -10,6 +10,7 @@ public class Printer {
 	private static UnicodeFont fontText;
 	private static UnicodeFont fontNum;
 	private static UnicodeFont fontWarn;
+	private static UnicodeFont fontHits;
 	
 	public static void writeText(float x, float y, String text) {
 		fontText.drawString(x, y, text);
@@ -23,7 +24,11 @@ public class Printer {
 		fontWarn.drawString(x, y, text);
 	}
 	
-    @SuppressWarnings("unchecked")
+	public static void writeHits(float x, float y, String text) {
+		fontHits.drawString(x, y, text);
+	}
+
+	@SuppressWarnings("unchecked")
 	public static void setUpFonts() {
         Font awtFontText = new Font("Verdana", Font.BOLD, 14);
         fontText = new UnicodeFont(awtFontText);
@@ -45,12 +50,22 @@ public class Printer {
             e.printStackTrace();
         }
 
-        Font awtFontWarn = new Font("Verdana", Font.BOLD, 18);
+        Font awtFontWarn = new Font("Verdana", Font.BOLD, 24);
         fontWarn = new UnicodeFont(awtFontWarn);
-        fontWarn.getEffects().add(new ColorEffect(java.awt.Color.orange));
+        fontWarn.getEffects().add(new ColorEffect(java.awt.Color.lightGray));
         fontWarn.addAsciiGlyphs();
         try {
         	fontWarn.loadGlyphs();
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+
+        Font awtFontHits = new Font("Verdana", Font.BOLD, 14);
+        fontHits = new UnicodeFont(awtFontHits);
+        fontHits.getEffects().add(new ColorEffect(java.awt.Color.white));
+        fontHits.addAsciiGlyphs();
+        try {
+        	fontHits.loadGlyphs();
         } catch (SlickException e) {
             e.printStackTrace();
         }
