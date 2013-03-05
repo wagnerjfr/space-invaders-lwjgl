@@ -10,12 +10,12 @@ public class Enemy extends AbstractFigther {
 	private boolean isMoving = true;
 	private int numOfHits; 
 
-	public Enemy(double x, double y, double width, double height, float speed, ObjectType type) {
+	public Enemy(double x, double y, double width, double height, float speed, ObjectType type, float bombSpeed, int hits) {
 		super(x, y, width, height, speed, type);
 		
-		createBombs(1, x, y, 10, 20, .2f, ObjectType.BOMB);
+		createBombs(1, x, y, 10, 20, bombSpeed, ObjectType.BOMB);
 		
-		numOfHits = 2;
+		numOfHits = hits;
 	}
 	
 	@Override
