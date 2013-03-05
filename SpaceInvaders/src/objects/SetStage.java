@@ -35,7 +35,7 @@ public class SetStage {
 				float bombSpeed = Float.parseFloat(data[4].trim());
 				int hits = Integer.parseInt(data[5].trim());
 				
-				listStage.put(id, new Stage(numberTotalOfAliens, numberOfAliensRow, speed, bombSpeed, hits));
+				listStage.put(id, new Stage(id, numberTotalOfAliens, numberOfAliensRow, speed, bombSpeed, hits));
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -58,13 +58,15 @@ public class SetStage {
 	}
 
 	public class Stage {
+		private int id;
 		private int numberTotalOfAliens;
 		private int numberOfAliensRow;
 		private float speed;
 		private float bombSpeed;
 		private int hits;
 		
-		public Stage(int numberTotalOfAliens, int numberOfAliensRow, float speed, float bombSpeed, int hits) {
+		public Stage(int id, int numberTotalOfAliens, int numberOfAliensRow, float speed, float bombSpeed, int hits) {
+			this.id = id;
 			this.numberTotalOfAliens = numberTotalOfAliens;
 			this.numberOfAliensRow = numberOfAliensRow;
 			this.speed = speed;
