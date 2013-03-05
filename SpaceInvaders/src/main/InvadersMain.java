@@ -20,6 +20,7 @@ import objects.Background;
 import objects.CollisionType;
 import objects.Player;
 import objects.Score;
+import objects.SetStage;
 import objects.SoundManager;
 
 import org.lwjgl.LWJGLException;
@@ -39,6 +40,7 @@ public class InvadersMain {
 	private Player player;
 	private Aliens aliens;
 	private Score score;
+	private SetStage setStage;
 	private Background background;
 	
 	public InvadersMain() {
@@ -95,7 +97,8 @@ public class InvadersMain {
 	private void setUpEntities() {
 		player = new Player(WIDTH/2, HEIGHT-42, 32, 32, .2f, ObjectType.PLAYER);
 		score = new Score(getTime());
-		aliens = new Aliens(score.getNumStage());
+		setStage = new SetStage();
+		aliens = new Aliens(setStage.getStage(score.getNumStage()));
 		background = new Background();
 	}
 	
@@ -119,7 +122,7 @@ public class InvadersMain {
 		            	 break;
 		             case Keyboard.KEY_Y:
 		     			 score.initialize(getTime());
-   		     			 aliens.createAliens(score.getNumStage());
+   		     			 aliens.createAliens(setStage.getStage(score.getNumStage()));
 		            	 break;
 		             case Keyboard.KEY_N:
 		            	 isRunnig = false;
@@ -177,7 +180,7 @@ public class InvadersMain {
 		//Next stage
 		if (aliens.getTotalNumberOfAliens() == 0) {
 			score.setNewStage(getTime());
-			aliens.createAliens(score.getNumStage());
+			aliens.createAliens(setStage.getStage(score.getNumStage()));
 			background.resetY();
 		}
 		

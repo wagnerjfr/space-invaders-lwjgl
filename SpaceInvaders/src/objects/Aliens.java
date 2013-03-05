@@ -2,12 +2,14 @@ package objects;
 
 import java.util.ArrayList;
 
+import objects.SetStage.Stage;
+
 import entities.ObjectType;
 
 public class Aliens {
 
 	private int totalNumberOfAliens;
-	private int numberOfAliensRow = 10;
+	private int numberOfAliensRow;
 	private int gap = 45;
 	public static boolean isMovingRight = true;
 	public static boolean isMovingDown = false;
@@ -18,18 +20,20 @@ public class Aliens {
 	
 	private ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	
-	public Aliens(int stage) {
+	public Aliens(Stage stage) {
 		createAliens(stage);
 		
 		explosion_Rocket_X_Enemy = new SoundManager(SoundType.EXPLOSION_ROCKET);
 		explosion_Bomb_X_Player = new SoundManager(SoundType.EXPLOSION_BOMB);
 	}
 	
-	public void createAliens(int stage) {
+	public void createAliens(Stage stage) {
 		
 		aliens.clear();
 		
-		totalNumberOfAliens = numberOfAliensRow * stage;
+		totalNumberOfAliens = stage.getNumberTotalOfAliens();
+		numberOfAliensRow = stage.getNumberOfAliensRow();
+		
 		int row = -1;
 		int cont = 0;
 		
@@ -60,7 +64,7 @@ public class Aliens {
 				break;
 			}
 			
-			Enemy enemy = new Enemy(0 + cont*gap, 32 + row*gap, 32, 32, .15f, objType);
+			Enemy enemy = new Enemy(0 + cont*gap, 32 + row*gap, 32, 32, stage.getSpeed(), objType, stage.getBombSpeed(), stage.getHits());
 			aliens.add(enemy);
 			cont++;
 		}
