@@ -21,11 +21,11 @@ public abstract class AbstractEntity implements Entity {
 	protected Rectangle hitbox = new Rectangle();
 	protected ObjectType type;
 	
-	private String[] spriteMap;
-	private Sprite sprite;
-	private int currentNumSprite;
-	private long shiftTime;
-	private final long SHIFT_RATE = 100;
+	protected String[] spriteMap;
+	protected Sprite sprite;
+	protected int currentNumSprite;
+	protected long shiftTime;
+	protected long SHIFT_RATE = 100;
 	
 	public AbstractEntity() {}
 	
