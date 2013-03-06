@@ -31,7 +31,6 @@ public class Score {
 	public Score(long time) {
 		Printer.setUpFonts();
 		initialize(time);
-		setNewStage(time);
 	}
 
 	public void initialize(long time) {
@@ -43,6 +42,8 @@ public class Score {
 		
 		isNewStage = false;
 		isGameOver = false;
+
+		setNewStage(time);
 	}
 
 	public void increasePoints() {
