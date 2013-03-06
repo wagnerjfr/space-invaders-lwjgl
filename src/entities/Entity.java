@@ -1,7 +1,7 @@
 package entities;
 
 public interface Entity {
-	public void draw();
+	public void draw(long newTime);
 	public void update(int delta);
 	public void setLocation(double x, double y);
 	public void setX(double x);

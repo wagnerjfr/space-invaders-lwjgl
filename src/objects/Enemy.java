@@ -19,8 +19,8 @@ public class Enemy extends AbstractFigther {
 	}
 	
 	@Override
-	public void draw() {
-		super.draw();
+	public void draw(long newTime) {
+		super.draw(newTime);
 		
 		Printer.writeHits((float)x + 12, (float)y - 15, String.valueOf(numOfHits));
 	}
@@ -34,12 +34,12 @@ public class Enemy extends AbstractFigther {
 			if (x >= WIDTH - width && Aliens.isMovingRight) {
 				Aliens.isMovingRight = false;
 				Aliens.isMovingDown = true;
-				//moveLeft();  //Nao pode j‡ mover pois Ž o ultimo da linha, atualiza no prox. loop
+				//moveLeft();  //Nao pode mover pois eh o ultimo da linha, atualiza no prox. loop
 			}
 			else if (x <= 0 && !Aliens.isMovingRight) {
 				Aliens.isMovingRight = true;
 				Aliens.isMovingDown = true;
-				moveRight(); //Ja move pois Ž o 1st da fila, o restante Ž atualizada em seguida
+				moveRight(); //Ja pode mover pois eh o 1st da fila, o restante eh atualizada em seguida
 			}
 			else if (Aliens.isMovingRight)
 				moveRight();

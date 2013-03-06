@@ -17,12 +17,12 @@ public abstract class AbstractFigther extends AbstractMoveableEntity {
 	}
 
 	@Override
-	public void draw() {
-		super.draw();
+	public void draw(long newTime) {
+		super.draw(newTime);
 
 		for (Bomb bomb : listBomb)
 			if (bomb.isLaunched())
-				bomb.draw();
+				bomb.draw(newTime);
 	}
 		
 	public void moveRight() {

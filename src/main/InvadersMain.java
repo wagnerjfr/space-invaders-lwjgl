@@ -107,8 +107,8 @@ public class InvadersMain {
 	private void render() {
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		background.draw();
-		player.draw();
-		aliens.draw();
+		player.draw(getTime());
+		aliens.draw(getTime());
 		score.draw(getTime());
 	}
 	
