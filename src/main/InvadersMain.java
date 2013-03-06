@@ -31,6 +31,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import entities.ObjectType;
+import entities.WorldVariables;
 
 public class InvadersMain {
 		
@@ -47,6 +48,7 @@ public class InvadersMain {
 		setUpDisplay();
 		setUpOpenGL();
 		SoundManager.create();
+		WorldVariables.setUpSpriteSheet();
 		setUpEntities();
 		setUpTimer();
 		while (isRunnig) {
@@ -93,7 +95,7 @@ public class InvadersMain {
 		glEnable(GL_BLEND); 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
-
+	
 	private void setUpEntities() {
 		player = new Player(WIDTH/2, HEIGHT-42, 32, 32, .2f, ObjectType.PLAYER);
 		score = new Score(getTime());
