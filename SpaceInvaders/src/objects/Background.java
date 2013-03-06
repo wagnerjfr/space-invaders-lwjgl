@@ -37,8 +37,8 @@ public class Background {
 	public void draw() {
 		figure.bind();
 		
-		if (figure_y > -110)
-			figure_y = figure_y - 0.05;
+		if (figure_y > -500)
+			figure_y = figure_y - 0.01;
 		
 		glTranslated(0, figure_y, 0);
 		glBegin(GL_QUADS);
@@ -47,9 +47,9 @@ public class Background {
 		glTexCoord2d(1, 0);
 		glVertex2d(figure.getImageWidth(), 0);
 		glTexCoord2d(1, 1);
-		glVertex2d(figure.getImageWidth(), figure.getImageHeight() + 350);
+		glVertex2d(figure.getImageWidth(), figure.getImageHeight());
 		glTexCoord2d(0, 1);
-		glVertex2d(0, figure.getImageHeight() + 350);
+		glVertex2d(0, figure.getImageHeight());
 		glEnd();
 	}
 

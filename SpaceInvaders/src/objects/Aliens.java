@@ -43,14 +43,14 @@ public class Aliens {
 				cont = 0;
 			}
 			
-			int rand = (int) (Math.random() * (2)); //[0 a 1]
+			int rand = (int) (Math.random() * (5)); //[0 a 1]
 			ObjectType objType;
 			
 			switch (rand + 1) {
 			case 1:
 				objType = ObjectType.ENEMY1;
 				break;
-/*			case 2:
+			case 2:
 				objType = ObjectType.ENEMY2;
 				break;
 			case 3:
@@ -58,9 +58,12 @@ public class Aliens {
 				break;
 			case 4:
 				objType = ObjectType.ENEMY4;
-				break;*/
+				break;
+			case 5:
+				objType = ObjectType.ENEMY5;
+				break;
 			default:
-				objType = ObjectType.ENEMY2;
+				objType = ObjectType.ENEMY6;
 				break;
 			}
 			
