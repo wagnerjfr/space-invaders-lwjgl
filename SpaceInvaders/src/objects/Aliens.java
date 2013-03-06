@@ -71,9 +71,9 @@ public class Aliens {
 		
 	}
 	
-	public void draw() {
+	public void draw(long newTime) {
 		for (Enemy enemy : aliens) {
-			enemy.draw();
+			enemy.draw(newTime);
 		}
 	}
 	

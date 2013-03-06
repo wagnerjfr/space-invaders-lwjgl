@@ -20,7 +20,12 @@ public abstract class AbstractEntity implements Entity {
 	protected double x, y, width, height;
 	protected Rectangle hitbox = new Rectangle();
 	protected ObjectType type;
-	private static Sprite sprite;
+	
+	private String[] spriteMap;
+	private Sprite sprite;
+	private int currentNumSprite;
+	private long shiftTime;
+	private final long SHIFT_RATE = 100;
 	
 	public AbstractEntity() {}
 	
@@ -30,6 +35,11 @@ public abstract class AbstractEntity implements Entity {
 		this.width = width;
 		this.height = height;
 		this.type = type;
+		
+		currentNumSprite = 0;
+		shiftTime = 0;
+		this.spriteMap = type.location.split(",");
+		sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite]); //default
 	}
 	
 	@Override
@@ -95,15 +105,18 @@ public abstract class AbstractEntity implements Entity {
 	}
 	
 	@Override
-	public void draw() {
+	public void draw(long newTime) {
         glEnable(GL_TEXTURE_RECTANGLE_ARB);
         glEnable(GL_CULL_FACE);
         //glCullFace(GL_BACK);
         
-        sprite = WorldVariables.spriteMap.get(type.location);
-
+        if (shiftTime < newTime) {
+            shiftTime = newTime + SHIFT_RATE;
+            setNextSprite();
+        }
+        
         glBindTexture(GL_TEXTURE_RECTANGLE_ARB, WorldVariables.spritesheet);
-		
+        
 		int sprite_x = sprite.getX();
         int sprite_y = sprite.getY();
         int sprite_x2 = sprite.getX() + sprite.getWidth();
@@ -127,5 +140,20 @@ public abstract class AbstractEntity implements Entity {
         
         glDisable(GL_TEXTURE_RECTANGLE_ARB);
         glDisable(GL_CULL_FACE);
+	}
+	
+	public void setNextSprite() {
+		if (spriteMap.length > 1) {
+			
+			if (currentNumSprite < spriteMap.length - 1)
+				currentNumSprite++;
+			else
+				currentNumSprite = 0;
+
+			sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite]);
+		}
+		else {
+			sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite]);
+		}
 	}
 }
