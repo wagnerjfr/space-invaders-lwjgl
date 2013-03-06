@@ -5,13 +5,6 @@ public abstract class AbstractMoveableEntity extends AbstractEntity implements M
 	protected double dX, dY;
 	protected float speed;
 	
-	public AbstractMoveableEntity(double width, double height, float speed, ObjectType type) {
-		super(width, height, type);
-		this.dX = 0;
-		this.dY = 0;
-		this.speed = speed;
-	}
-
 	public AbstractMoveableEntity(double x, double y, double width, double height, float speed, ObjectType type) {
 		super(x, y, width, height, type);
 		this.dX = 0;
