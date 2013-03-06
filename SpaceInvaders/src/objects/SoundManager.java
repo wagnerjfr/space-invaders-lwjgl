@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
-import org.lwjgl.util.WaveData;
+import org.newdawn.slick.openal.WaveData;
 
 import static org.lwjgl.openal.AL10.*;
 
