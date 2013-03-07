@@ -15,6 +15,8 @@ import static org.lwjgl.opengl.GL11.glVertex2d;
 
 import java.awt.Rectangle;
 
+import sprites.Sprite;
+
 public abstract class AbstractEntity implements Entity {
 	
 	protected double x, y, width, height;
@@ -41,7 +43,15 @@ public abstract class AbstractEntity implements Entity {
 		currentNumSprite = -1; //-1 because the next sprite should be the index 0 (draw->setNextSprite() if it's 0, the next would be 1 in the 1st draw)
 		shiftTime = 0;
 		this.spriteMap = type.location.split(",");
-		sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite + 1]); //default
+		
+		switch (type) {
+		case EXPLOSION:
+			sprite = WorldVariables.explosion.spriteMap.get(spriteMap[currentNumSprite + 1]); //default
+			break;
+		default:
+			sprite = WorldVariables.moveableEntities.spriteMap.get(spriteMap[currentNumSprite + 1]); //default
+			break;
+		}
 	}
 	
 	@Override
@@ -117,7 +127,14 @@ public abstract class AbstractEntity implements Entity {
             setNextSprite();
         }
         
-        glBindTexture(GL_TEXTURE_RECTANGLE_ARB, WorldVariables.spritesheet);
+        switch (type) {
+		case EXPLOSION:
+	        glBindTexture(GL_TEXTURE_RECTANGLE_ARB, WorldVariables.explosion.spriteSheet);
+			break;
+		default:
+	        glBindTexture(GL_TEXTURE_RECTANGLE_ARB, WorldVariables.moveableEntities.spriteSheet);
+			break;
+		}
         
 		int sprite_x = sprite.getX();
         int sprite_y = sprite.getY();
@@ -154,7 +171,14 @@ public abstract class AbstractEntity implements Entity {
 				currentNumSprite = 0;
 			}
 
-			sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite]);
+	        switch (type) {
+			case EXPLOSION:
+				sprite = WorldVariables.explosion.spriteMap.get(spriteMap[currentNumSprite]);
+				break;
+			default:
+				sprite = WorldVariables.moveableEntities.spriteMap.get(spriteMap[currentNumSprite]);
+				break;
+			}
 		}
 	}
 }

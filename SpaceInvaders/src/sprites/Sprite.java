@@ -1,4 +1,4 @@
-package entities;
+package sprites;
 
 public final class Sprite {
 
