@@ -15,7 +15,8 @@ public enum ObjectType {
 	ENEMY5("alien5R.png,alien5L.png"), 
 	ENEMY6("alien6R.png,alien6L.png"), 
 	ROCKET("rocket.png"), 
-	BOMB("bomb.png");
+	BOMB("bomb.png"),
+	EXPLOSION("explosion1.png,explosion2.png,explosion3.png,explosion4.png,explosion5.png,explosion6.png,explosion7.png,explosion8.png");
 	
 	public final String location;
 	

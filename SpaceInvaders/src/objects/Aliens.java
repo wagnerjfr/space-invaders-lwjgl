@@ -15,16 +15,16 @@ public class Aliens {
 	public static boolean isMovingDown = false;
 	private long moveDownTime = 0;
 	
-	private SoundManager explosion_Rocket_X_Enemy;
-	private SoundManager explosion_Bomb_X_Player;
+	private ArrayList<SoundManager> list_explosion_Rocket_X_Enemy;
+	private ArrayList<SoundManager> list_explosion_Bomb_X_Player;
 	
 	private ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	
 	public Aliens(Stage stage) {
 		createAliens(stage);
 		
-		explosion_Rocket_X_Enemy = new SoundManager(SoundType.EXPLOSION_ROCKET);
-		explosion_Bomb_X_Player = new SoundManager(SoundType.EXPLOSION_BOMB);
+		list_explosion_Rocket_X_Enemy = new ArrayList<SoundManager>();
+		list_explosion_Bomb_X_Player = new ArrayList<SoundManager>();
 	}
 	
 	public void createAliens(Stage stage) {
@@ -57,8 +57,8 @@ public class Aliens {
 				objType = ObjectType.ENEMY3;
 				break;
 			case 4:
-				objType = ObjectType.ENEMY4;
-				break;
+/*				objType = ObjectType.ENEMY4;
+				break;*/
 			case 5:
 				objType = ObjectType.ENEMY5;
 				break;
@@ -119,7 +119,8 @@ public class Aliens {
 					if (!enemy.isMoving()) {
 						collision = true;
 						totalNumberOfAliens--;
-						explosion_Rocket_X_Enemy.play();
+						
+						playCollisionSound(SoundType.EXPLOSION_ROCKET);
 					}
 					break;
 				}
@@ -127,7 +128,9 @@ public class Aliens {
 			case BOMB_X_PLAYER:
 				if (enemy.bombIntersects(player)) {
 					collision = true;
-					explosion_Bomb_X_Player.play();
+					
+					playCollisionSound(SoundType.EXPLOSION_BOMB);
+					
 					break;
 				}
 				break;
@@ -137,15 +140,18 @@ public class Aliens {
 					if (!enemy.isMoving()) {
 						collision = true;
 						totalNumberOfAliens--;
-						explosion_Rocket_X_Enemy.play();
+
+						playCollisionSound(SoundType.EXPLOSION_ROCKET);
 					}
-					explosion_Bomb_X_Player.play();
+					
+					playCollisionSound(SoundType.EXPLOSION_BOMB);
+
 					break;
 				}
 				break;
 			}
 		}
-
+		
 		return collision;
 	}
 
@@ -165,5 +171,26 @@ public class Aliens {
 		}
 		
 		return low;
+	}
+	
+	public void playCollisionSound(SoundType type) {
+		SoundManager sound = new SoundManager(type);
+		
+		switch (type) {
+		case EXPLOSION_BOMB:
+			list_explosion_Bomb_X_Player.add(sound);
+			break;
+		default:
+			list_explosion_Rocket_X_Enemy.add(sound);
+			break;
+		}
+		
+		sound.play();
+		
+	}
+	
+	public void clearSoundLists() {
+		list_explosion_Bomb_X_Player.clear();
+		list_explosion_Rocket_X_Enemy.clear();
 	}
 }

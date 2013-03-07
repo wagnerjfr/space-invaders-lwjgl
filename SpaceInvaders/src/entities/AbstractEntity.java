@@ -21,11 +21,13 @@ public abstract class AbstractEntity implements Entity {
 	protected Rectangle hitbox = new Rectangle();
 	protected ObjectType type;
 	
-	protected String[] spriteMap;
-	protected Sprite sprite;
-	protected int currentNumSprite;
-	protected long shiftTime;
-	protected long SHIFT_RATE = 100;
+	private String[] spriteMap;
+	private Sprite sprite;
+	private int currentNumSprite;
+	private long shiftTime;
+	protected long shift_rate = 100;
+	protected int shift_times = 0;
+	protected int max_shift_times = -1; // -1 always show
 	
 	public AbstractEntity() {}
 	
@@ -36,10 +38,10 @@ public abstract class AbstractEntity implements Entity {
 		this.height = height;
 		this.type = type;
 		
-		currentNumSprite = 0;
+		currentNumSprite = -1; //-1 because the next sprite should be the index 0 (draw->setNextSprite() if it's 0, the next would be 1 in the 1st draw)
 		shiftTime = 0;
 		this.spriteMap = type.location.split(",");
-		sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite]); //default
+		sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite + 1]); //default
 	}
 	
 	@Override
@@ -111,7 +113,7 @@ public abstract class AbstractEntity implements Entity {
         //glCullFace(GL_BACK);
         
         if (shiftTime < newTime) {
-            shiftTime = newTime + SHIFT_RATE;
+            shiftTime = newTime + shift_rate;
             setNextSprite();
         }
         
@@ -147,12 +149,11 @@ public abstract class AbstractEntity implements Entity {
 			
 			if (currentNumSprite < spriteMap.length - 1)
 				currentNumSprite++;
-			else
+			else {
+				shift_times++;
 				currentNumSprite = 0;
+			}
 
-			sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite]);
-		}
-		else {
 			sprite = WorldVariables.spriteMap.get(spriteMap[currentNumSprite]);
 		}
 	}
