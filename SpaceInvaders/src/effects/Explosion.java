@@ -1,10 +1,10 @@
-package objects;
+package effects;
 
 import entities.AbstractEntity;
 import entities.ObjectType;
 
 public class Explosion extends AbstractEntity {
-
+	
 	public Explosion(double x, double y, double width, double height, ObjectType type) {
 		super(x, y, width, height, type);
 		

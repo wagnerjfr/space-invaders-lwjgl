@@ -1,4 +1,4 @@
-package objects;
+package effects;
 
 public enum SoundType {
 	LAUNCH_ROCKET("res/sounds/colt45.wav"), EXPLOSION_ROCKET("res/sounds/bomb-02.wav"),
