@@ -15,17 +15,12 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
-
-import java.util.ArrayList;
-
 import objects.Aliens;
 import objects.Background;
 import objects.CollisionType;
-import objects.Explosion;
 import objects.Player;
 import objects.Score;
 import objects.SetStage;
-import objects.SoundManager;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -34,8 +29,9 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import effects.Effects;
+import effects.SoundManager;
 import entities.ObjectType;
-import entities.WorldVariables;
 
 public class InvadersMain {
 		
@@ -47,13 +43,11 @@ public class InvadersMain {
 	private Score score;
 	private SetStage setStage;
 	private Background background;
-	private ArrayList<Explosion> listPlayerEplosion;
 	
 	public InvadersMain() {
 		setUpDisplay();
 		setUpOpenGL();
-		SoundManager.create();
-		WorldVariables.setUpSpriteSheet();
+		Effects.setUp();
 		setUpEntities();
 		setUpTimer();
 		while (isRunnig) {
@@ -107,7 +101,6 @@ public class InvadersMain {
 		setStage = new SetStage();
 		aliens = new Aliens(setStage.getStage(score.getNumStage()));
 		background = new Background();
-		listPlayerEplosion = new ArrayList<Explosion>(score.getNumLives());
 	}
 	
 	private void render() {
@@ -117,11 +110,8 @@ public class InvadersMain {
 		aliens.draw(getTime());
 		score.draw(getTime());
 		
-		if (listPlayerEplosion != null)
-			
-			for (Explosion explosion : listPlayerEplosion)
-				if (explosion != null)
-					explosion.draw(getTime());
+		if (Effects.listExplosion != null)
+			Effects.drawEffect(ObjectType.EXPLOSION, getTime());
 	}
 	
 	private void input() {
@@ -182,7 +172,7 @@ public class InvadersMain {
 		//Bomb x Player
 		if (aliens.collison(player, CollisionType.BOMB_X_PLAYER)) {
 			score.decreaseLives();
-			listPlayerEplosion.add(new Explosion(player.getX(), player.getY() - 10, 32, 32, ObjectType.EXPLOSION));
+			Effects.createExplosion(player.getX(), player.getY() - 10, 32, 32);
 			//score.addWarnHit(player.getX(), player.getY() - 20, "Hit!!", getTime());
 		}
 
@@ -196,14 +186,13 @@ public class InvadersMain {
 		if (aliens.getTotalNumberOfAliens() == 0) {
 			score.setNewStage(getTime());
 			aliens.createAliens(setStage.getStage(score.getNumStage()));
-			aliens.clearSoundLists();
+			Effects.clear();
 		}
 		
 		// Game Over
 		if ((aliens.getLowestEnemy() >= HEIGHT - IMAGE_HEIGHT) || (score.getNumLives() == 0)) {
 			score.setGameOver(getTime());
-			listPlayerEplosion.clear();
-			aliens.clearSoundLists();
+			Effects.clear();
 		}
 	}
 	

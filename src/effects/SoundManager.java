@@ -1,4 +1,4 @@
-package objects;
+package effects;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.newdawn.slick.openal.WaveData;
+
 
 import static org.lwjgl.openal.AL10.*;
 

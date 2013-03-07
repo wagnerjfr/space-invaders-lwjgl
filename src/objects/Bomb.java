@@ -1,5 +1,7 @@
 package objects;
 
+import effects.Effects;
+import effects.SoundType;
 import entities.AbstractMoveableEntity;
 import entities.ObjectType;
 
@@ -7,17 +9,9 @@ public class Bomb extends AbstractMoveableEntity {
 	
 	private boolean isLaunched = false;
 	
-	private SoundManager fireSound;
-
-	@SuppressWarnings("incomplete-switch")
 	public Bomb(double x, double y, double width, double height, float speed, ObjectType type) {
 		super(x, y, width, height, speed, type);
 		
-		switch (type) {
-		case ROCKET:
-			fireSound = new SoundManager(SoundType.LAUNCH_ROCKET);
-			break;
-		}
 	}
 
 	@SuppressWarnings("incomplete-switch")
@@ -28,7 +22,7 @@ public class Bomb extends AbstractMoveableEntity {
 		switch (type) {
 		case ROCKET:
 			setDY(-speed);
-			fireSound.play();
+			Effects.playSound(SoundType.LAUNCH_ROCKET);
 			break;
 		case BOMB:
 			setDY(speed);
