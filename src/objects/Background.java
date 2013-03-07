@@ -18,7 +18,9 @@ import org.newdawn.slick.opengl.TextureLoader;
 public class Background {
 
 	private Texture figure;
-	private double figure_y = 0;
+	private final double VELOCITY = 0.05;
+	private double figure_x = 0;
+	private boolean moveRight = true;
 	
 	public Background() {
 		setFigure();
@@ -37,10 +39,18 @@ public class Background {
 	public void draw() {
 		figure.bind();
 		
-		if (figure_y > -500)
-			figure_y = figure_y - 0.01;
+		if ((moveRight) && (figure_x > -160)) {
+			figure_x = figure_x - VELOCITY;
+		}
+		else if (figure_x < 0) {
+			moveRight = false;
+			figure_x = figure_x + VELOCITY;
+		}
+		else if (figure_x == 0) {
+			moveRight = true;
+		}
 		
-		glTranslated(0, figure_y, 0);
+		glTranslated(figure_x, 0, 0);
 		glBegin(GL_QUADS);
 		glTexCoord2d(0, 0);
 		glVertex2d(0, 0);
@@ -51,9 +61,5 @@ public class Background {
 		glTexCoord2d(0, 1);
 		glVertex2d(0, figure.getImageHeight());
 		glEnd();
-	}
-
-	public void resetY() {
-		figure_y = 0;
 	}
 }

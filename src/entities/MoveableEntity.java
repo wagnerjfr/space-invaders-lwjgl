@@ -1,6 +1,7 @@
 package entities;
 
 public interface MoveableEntity extends Entity {
+	public void update(int delta);
 	public double getDX();
 	public double getDY();
 	public float getSpeed();

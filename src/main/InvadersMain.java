@@ -15,9 +15,13 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
+
+import java.util.ArrayList;
+
 import objects.Aliens;
 import objects.Background;
 import objects.CollisionType;
+import objects.Explosion;
 import objects.Player;
 import objects.Score;
 import objects.SetStage;
@@ -43,6 +47,7 @@ public class InvadersMain {
 	private Score score;
 	private SetStage setStage;
 	private Background background;
+	private ArrayList<Explosion> listPlayerEplosion;
 	
 	public InvadersMain() {
 		setUpDisplay();
@@ -102,6 +107,7 @@ public class InvadersMain {
 		setStage = new SetStage();
 		aliens = new Aliens(setStage.getStage(score.getNumStage()));
 		background = new Background();
+		listPlayerEplosion = new ArrayList<Explosion>(score.getNumLives());
 	}
 	
 	private void render() {
@@ -110,6 +116,12 @@ public class InvadersMain {
 		player.draw(getTime());
 		aliens.draw(getTime());
 		score.draw(getTime());
+		
+		if (listPlayerEplosion != null)
+			
+			for (Explosion explosion : listPlayerEplosion)
+				if (explosion != null)
+					explosion.draw(getTime());
 	}
 	
 	private void input() {
@@ -170,7 +182,8 @@ public class InvadersMain {
 		//Bomb x Player
 		if (aliens.collison(player, CollisionType.BOMB_X_PLAYER)) {
 			score.decreaseLives();
-			score.addWarnHit(player.getX(), player.getY() - 20, "Hit!!", getTime());
+			listPlayerEplosion.add(new Explosion(player.getX(), player.getY() - 10, 32, 32, ObjectType.EXPLOSION));
+			//score.addWarnHit(player.getX(), player.getY() - 20, "Hit!!", getTime());
 		}
 
 		//Enemy x Player
@@ -183,12 +196,14 @@ public class InvadersMain {
 		if (aliens.getTotalNumberOfAliens() == 0) {
 			score.setNewStage(getTime());
 			aliens.createAliens(setStage.getStage(score.getNumStage()));
-			background.resetY();
+			aliens.clearSoundLists();
 		}
 		
 		// Game Over
 		if ((aliens.getLowestEnemy() >= HEIGHT - IMAGE_HEIGHT) || (score.getNumLives() == 0)) {
 			score.setGameOver(getTime());
+			listPlayerEplosion.clear();
+			aliens.clearSoundLists();
 		}
 	}
 	

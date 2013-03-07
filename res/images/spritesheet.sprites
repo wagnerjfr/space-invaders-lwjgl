@@ -7,14 +7,20 @@
       <spr name="alien2L.png" x="100" y="1" w="32" h="32"/>
       <spr name="alien3R.png" x="133" y="1" w="32" h="32"/>
       <spr name="alien3L.png" x="166" y="1" w="32" h="32"/>
-      <spr name="alien4R.png" x="199" y="1" w="32" h="32"/>
-      <spr name="alien4L.png" x="232" y="1" w="32" h="32"/>
-      <spr name="alien5R.png" x="265" y="1" w="32" h="32"/>
-      <spr name="alien5L.png" x="298" y="1" w="32" h="32"/>
-      <spr name="alien6R.png" x="331" y="1" w="32" h="32"/>
-      <spr name="alien6L.png" x="364" y="1" w="32" h="32"/>
-      <spr name="bomb.png" x="397" y="1" w="32" h="32"/>
-      <spr name="nave1.png" x="430" y="1" w="32" h="32"/>
-      <spr name="nave2.png" x="463" y="1" w="32" h="32"/>
-      <spr name="rocket.png" x="496" y="1" w="32" h="32"/>
+      <spr name="alien5R.png" x="199" y="1" w="32" h="32"/>
+      <spr name="alien5L.png" x="232" y="1" w="32" h="32"/>
+      <spr name="alien6R.png" x="265" y="1" w="32" h="32"/>
+      <spr name="alien6L.png" x="298" y="1" w="32" h="32"/>
+      <spr name="bomb.png" x="331" y="1" w="32" h="32"/>
+      <spr name="nave1.png" x="364" y="1" w="32" h="32"/>
+      <spr name="nave2.png" x="397" y="1" w="32" h="32"/>
+      <spr name="rocket.png" x="430" y="1" w="32" h="32"/>
+      <spr name="explosion1.png" x="1" y="34" w="220" h="220"/>
+      <spr name="explosion2.png" x="1" y="255" w="220" h="220"/>
+      <spr name="explosion3.png" x="1" y="476" w="220" h="220"/>
+      <spr name="explosion4.png" x="1" y="697" w="220" h="220"/>
+      <spr name="explosion5.png" x="222" y="34" w="220" h="220"/>
+      <spr name="explosion6.png" x="443" y="34" w="220" h="220"/>
+      <spr name="explosion7.png" x="664" y="34" w="220" h="220"/>
+      <spr name="explosion8.png" x="222" y="255" w="220" h="220"/>
 </img>
