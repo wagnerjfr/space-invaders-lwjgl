@@ -57,13 +57,10 @@ public class Aliens {
 				objType = ObjectType.ENEMY3;
 				break;
 			case 4:
-/*				objType = ObjectType.ENEMY4;
-				break;*/
-			case 5:
-				objType = ObjectType.ENEMY5;
+				objType = ObjectType.ENEMY4;
 				break;
 			default:
-				objType = ObjectType.ENEMY6;
+				objType = ObjectType.ENEMY5;
 				break;
 			}
 			
