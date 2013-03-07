@@ -13,7 +13,6 @@ public enum ObjectType {
 	ENEMY3("alien3R.png,alien3L.png"), 
 	ENEMY4("alien4R.png,alien4L.png"), 
 	ENEMY5("alien5R.png,alien5L.png"), 
-	ENEMY6("alien6R.png,alien6L.png"), 
 	ROCKET("rocket.png"), 
 	BOMB("bomb.png"),
 	EXPLOSION("0,1,2,3,4,5,6,7");
