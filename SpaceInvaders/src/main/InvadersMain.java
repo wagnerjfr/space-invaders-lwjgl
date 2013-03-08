@@ -172,7 +172,7 @@ public class InvadersMain {
 		//Bomb x Player
 		if (aliens.collison(player, CollisionType.BOMB_X_PLAYER)) {
 			score.decreaseLives();
-			Effects.createExplosion(player.getX(), player.getY() - 10, 32, 32);
+			Effects.createExplosion(player.getX() - player.getWidth()/2, player.getY() - player.getHeight(), 64, 64);
 			//score.addWarnHit(player.getX(), player.getY() - 20, "Hit!!", getTime());
 		}
 
