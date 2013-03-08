@@ -1,5 +1,6 @@
 package objects;
 
+import effects.Effects;
 import entities.ObjectType;
 import static entities.WorldVariables.*;
 
@@ -75,6 +76,7 @@ public class Enemy extends AbstractFigther {
 	void hit() {
 		numOfHits--;
 		if (numOfHits == 0) {
+			Effects.createExplosion(x, y-32, 100, 100);
 			isMoving = false;
 			setDX(0);
 			setDY(0);

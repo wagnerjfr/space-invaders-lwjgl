@@ -46,7 +46,7 @@ public class Background {
 			moveRight = false;
 			figure_x = figure_x + VELOCITY;
 		}
-		else if (figure_x == 0) {
+		else if (figure_x >= 0) {
 			moveRight = true;
 		}
 		
