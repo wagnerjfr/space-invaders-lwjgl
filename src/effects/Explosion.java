@@ -8,7 +8,7 @@ public class Explosion extends AbstractEntity {
 	public Explosion(double x, double y, double width, double height, ObjectType type) {
 		super(x, y, width, height, type);
 		
-		shift_rate = 100;
+		shift_rate = 20;
 		max_shift_times = 1;
 	}
 	
