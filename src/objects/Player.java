@@ -9,8 +9,6 @@ public class Player extends AbstractFigther {
 		super(x, y, width, height, speed, type);
 		shift_rate = 200;
 		createBombs(3, x, y, 5, 25, .7f, ObjectType.ROCKET);
-		
-		
 	}
 	
 	public void updateTime(int delta) {

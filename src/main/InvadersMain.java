@@ -30,7 +30,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import effects.Effects;
-import effects.SoundManager;
+import effects.Sound;
 import entities.ObjectType;
 
 public class InvadersMain {
@@ -66,7 +66,7 @@ public class InvadersMain {
 				isRunnig = false;
 			}
 		}
-		SoundManager.destroy();
+		Sound.destroy();
 		Display.destroy();
 		System.exit(0);
 	}
@@ -78,7 +78,7 @@ public class InvadersMain {
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
-			SoundManager.destroy();
+			Sound.destroy();
 			Display.destroy();
 			System.exit(1);
 		}

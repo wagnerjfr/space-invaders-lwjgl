@@ -8,14 +8,13 @@ import entities.WorldVariables;
 public class Effects {
 
 	public static ArrayList<Explosion> listExplosion;
-	public static ArrayList<SoundManager> listSound;
+	public static ArrayList<Sound> listSound;
 	
 	public static void setUp() {
-		SoundManager.create();
 		WorldVariables.setUpSpriteSheet();
 		
 		listExplosion = new ArrayList<Explosion>();
-		listSound = new ArrayList<SoundManager>();
+		listSound = new ArrayList<Sound>();
 	}
 	
 	public static void createExplosion(double x, double y, double width, double height) {
@@ -23,7 +22,7 @@ public class Effects {
 	}
 	
 	public static void playSound(SoundType type) {
-		SoundManager sound = new SoundManager(type);
+		Sound sound = new Sound(type);
 		listSound.add(sound);
 		sound.play();
 	}
