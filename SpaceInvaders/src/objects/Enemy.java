@@ -1,5 +1,6 @@
 package objects;
 
+import state.Printer;
 import effects.Effects;
 import entities.ObjectType;
 import static entities.WorldVariables.*;

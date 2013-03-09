@@ -19,8 +19,6 @@ import objects.Aliens;
 import objects.Background;
 import objects.CollisionType;
 import objects.Player;
-import objects.Score;
-import objects.SetStage;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -28,6 +26,11 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+
+import state.Printer;
+import state.Score;
+import state.SetStage;
+import state.Score.StateType;
 
 import effects.Effects;
 import effects.Sound;
@@ -51,14 +54,41 @@ public class InvadersMain {
 		setUpEntities();
 		setUpTimer();
 		while (isRunnig) {
-			render();
 			input();
-			if (score.isGameOver()) {
+
+			glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			switch (score.state) {
+			case MAIN:
+				glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+				Printer.writeWarn(WIDTH/2 - 80, HEIGHT/2 - 50, "Space Invaders");
+				Printer.writeText(WIDTH/2 - 170, HEIGHT/2, "Press ENTER to play!");
+				break;
+			case GAMEOVER:
+				render();
 				score.writeGameOver();
-			}
-			else {
+				break;
+			case END_STAGE:
+				background.draw();
+				player.draw(getTime());
+
+				if (Effects.listExplosion != null)
+					Effects.drawEffect(ObjectType.EXPLOSION, getTime());
+				
+				score.writeEndGameStage(getTime());
+				break;
+			case NEXT_STAGE:
+				score.setNewStage(getTime());
+				aliens.createAliens(setStage.getStage(score.getNumStage()));
+				Effects.clear();
+				render();
+				score.state = StateType.GAME;
+				break;
+			default:
+				render();
 				logic(getDelta());
+				break;
 			}
+			
 			Display.update();
 			Display.sync(250);
 			
@@ -119,17 +149,24 @@ public class InvadersMain {
 		    if (Keyboard.getEventKeyState()) {
 		        switch (Keyboard.getEventKey()) {
 		             case Keyboard.KEY_SPACE:
-		            	 if (!score.isGameOver()) {
+		            	 if (score.state.equals(Score.StateType.GAME)) {
 			            	 player.launchBomb();
 			            	 score.increaseRockets();
 		            	 }
 		            	 break;
 		             case Keyboard.KEY_Y:
-		     			 score.initialize(getTime());
-   		     			 aliens.createAliens(setStage.getStage(score.getNumStage()));
+		            	 if (score.state.equals(Score.StateType.GAMEOVER)) {
+			     			 score.initialize(getTime());
+	   		     			 aliens.createAliens(setStage.getStage(score.getNumStage()));
+		            	 }
 		            	 break;
 		             case Keyboard.KEY_N:
-		            	 isRunnig = false;
+		            	 if (score.state.equals(Score.StateType.GAMEOVER))
+		            		 isRunnig = false;
+		            	 break;
+		             case Keyboard.KEY_RETURN:
+		            	 if (score.state.equals(StateType.MAIN))
+		            		 score.state = Score.StateType.GAME;
 		            	 break;
 		        }
 		    }
@@ -184,9 +221,7 @@ public class InvadersMain {
 		
 		//Next stage
 		if (aliens.getTotalNumberOfAliens() == 0) {
-			score.setNewStage(getTime());
-			aliens.createAliens(setStage.getStage(score.getNumStage()));
-			Effects.clear();
+			score.state = Score.StateType.END_STAGE;
 		}
 		
 		// Game Over
