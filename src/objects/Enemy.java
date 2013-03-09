@@ -1,9 +1,11 @@
 package objects;
 
+import static entities.WorldVariables.HEIGHT;
+import static entities.WorldVariables.WIDTH;
 import state.Printer;
+import state.Printer.PrinterType;
 import effects.Effects;
 import entities.ObjectType;
-import static entities.WorldVariables.*;
 
 public class Enemy extends AbstractFigther {
 	
@@ -25,7 +27,7 @@ public class Enemy extends AbstractFigther {
 	public void draw(long newTime) {
 		super.draw(newTime);
 		
-		Printer.writeHits((float)x + 12, (float)y - 15, String.valueOf(numOfHits));
+		Printer.write((float)x + 12, (float)y - 15, String.valueOf(numOfHits), PrinterType.HITS);
 	}
 	
 	public void updateTime(int delta, long systime) {

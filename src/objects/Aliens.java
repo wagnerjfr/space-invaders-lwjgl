@@ -18,9 +18,8 @@ public class Aliens {
 	
 	private ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	
-	public Aliens(Stage stage) {
-		createAliens(stage);
-		
+	public Aliens() {
+
 	}
 	
 	public void createAliens(Stage stage) {

@@ -5,6 +5,8 @@ import static entities.WorldVariables.WIDTH;
 
 import java.text.SimpleDateFormat;
 
+import state.Printer.PrinterType;
+
 
 public class Score {
 	
@@ -29,25 +31,19 @@ public class Score {
 	private long timeToPrint;
 	
 	private final int gap = 100;
-	
-	private WarnHit warnHit = null;
 
 	public Score(long time) {
 		Printer.setUpFonts();
-		initialize(time);
+		state = StateType.MAIN;
 	}
 
 	public void initialize(long time) {
-		state = StateType.MAIN;
-		
 		numLives = 5;
 		numPoints = 0;
 		numRockets = 0;
 		numStage = 0;
 		gameStartTime = time;
-		
 		isNewStage = false;
-		
 		gameEndStageTime = 0;
 
 		setNewStage(time);
@@ -81,49 +77,44 @@ public class Score {
 		/*
 		 * LIVES
 		 */
-		Printer.writeText(10, 0, lives);
-		Printer.writeNum(10 + 50, 0, String.valueOf(numLives));
+		Printer.write(10, 0, lives, PrinterType.YELLOW);
+		Printer.write(10 + 50, 0, String.valueOf(numLives), PrinterType.WHITE);
 		
 		/*
 		 * POINTS
 		 */
-		Printer.writeText(gap, 0, points);
-		Printer.writeNum(gap + 60, 0, String.valueOf(numPoints));
+		Printer.write(gap, 0, points, PrinterType.YELLOW);
+		Printer.write(gap + 60, 0, String.valueOf(numPoints), PrinterType.WHITE);
 		
 		/*
 		 * ROCKETS
 		 */
-		Printer.writeText(2*gap, 0, rockets);
-		Printer.writeNum(2*gap + 75, 0, String.valueOf(numRockets));
+		Printer.write(2*gap, 0, rockets, PrinterType.YELLOW);
+		Printer.write(2*gap + 75, 0, String.valueOf(numRockets), PrinterType.WHITE);
 		
 		/*
 		 * STAGE
 		 */
-		Printer.writeText(4*gap, 0, stage);
-		Printer.writeNum(4*gap + 55, 0, String.valueOf(numStage));
+		Printer.write(4*gap, 0, stage, PrinterType.YELLOW);
+		Printer.write(4*gap + 55, 0, String.valueOf(numStage), PrinterType.WHITE);
 		
 		/*
 		 * TIME
 		 */
-		Printer.writeText(5*gap, 0, time);
+		Printer.write(5*gap, 0, time, PrinterType.YELLOW);
 		if (state.equals(StateType.GAMEOVER))
-			Printer.writeNum(5*gap + 50, 0, getTime(gameOverTime - gameStartTime));
+			Printer.write(5*gap + 50, 0, getTime(gameOverTime - gameStartTime), PrinterType.WHITE);
 		else
-			Printer.writeNum(5*gap + 50, 0, getTime(newTime - gameStartTime));
+			Printer.write(5*gap + 50, 0, getTime(newTime - gameStartTime), PrinterType.WHITE);
 		
 		/*
 		 * New Stage message
 		 */
 		if (isNewStage) {
 			if (timeToPrint > newTime)
-				Printer.writeWarn(WIDTH/2 - 50, HEIGHT/2, "Stage " + numStage);
+				Printer.write(WIDTH/2 - 50, HEIGHT/2, "Stage " + numStage, PrinterType.WARN);
 			else 
 				isNewStage = false;
-				//state = StateType.GAME;
-		}
-		
-		if (warnHit != null) {
-			warnHit.print(newTime);
 		}
 	}
 
@@ -131,9 +122,9 @@ public class Score {
     	return (new SimpleDateFormat("mm:ss:SSS")).format(timePlayed);   
     }
     
-    public void setNewStage(long time) {
+    public void setNewStage(long newTime) {
     	isNewStage = true;
-    	timeToPrint = time + 2000;
+    	timeToPrint = newTime + 2000;
     	nextStage();
     }
 
@@ -144,48 +135,20 @@ public class Score {
 
 	public void writeGameOver() {
 		if (state.equals(StateType.GAMEOVER)) {
-			Printer.writeWarn(WIDTH/2 - 80, HEIGHT/2 - 50, "GAME OVER!");
-			Printer.writeText(WIDTH/2 - 170, HEIGHT/2, "Would you like to try again? (Y)es (N)o ");
+			Printer.write(WIDTH/2 - 80, HEIGHT/2 - 50, "GAME OVER!",PrinterType. WARN);
+			Printer.write(WIDTH/2 - 170, HEIGHT/2, "Would you like to try again? (Y)es (N)o ", PrinterType.YELLOW);
 		}
 	}
 	
-	public void writeEndGameStage(long newTime) {
+	public void waitEndGameStage(long newTime) {
 		if (state.equals(StateType.END_STAGE)) {
 			if (gameEndStageTime == 0)
-				gameEndStageTime = newTime + 3000;
+				gameEndStageTime = newTime + 800;
 			
-			if (newTime < gameEndStageTime)
-				Printer.writeText(WIDTH/2 - 170, HEIGHT/2, "Results:");
-			else {
+			if (newTime > gameEndStageTime) {
 				gameEndStageTime = 0;
 				state = StateType.NEXT_STAGE;
 			}
-		}
-	}
-	
-	public void addWarnHit(double x, double y, String text, long newTime) {
-		warnHit = new WarnHit((float)x, (float)y, text, newTime);
-	}
-	
-	/**
-	 * 
-	 * @author Wagner
-	 */
-	private class WarnHit {
-		float x, y;
-		String text;
-		long timeToShow;
-		
-		public WarnHit(float x, float y, String text, long timeToShow) {
-			this.x = x;
-			this.y = y;
-			this.text = text;
-			this.timeToShow = timeToShow + 1000;
-		}
-		
-		public void print(long newtime) {
-			if (timeToShow > newtime)
-				Printer.writeText(x, y, text);
 		}
 	}
 	

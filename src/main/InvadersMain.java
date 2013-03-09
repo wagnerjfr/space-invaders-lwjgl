@@ -16,7 +16,6 @@ import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
 import objects.Aliens;
-import objects.Background;
 import objects.CollisionType;
 import objects.Player;
 
@@ -27,11 +26,11 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-import state.Printer;
+import state.Background;
+import state.Background.BackgroundType;
 import state.Score;
-import state.SetStage;
 import state.Score.StateType;
-
+import state.SetStage;
 import effects.Effects;
 import effects.Sound;
 import entities.ObjectType;
@@ -45,7 +44,7 @@ public class InvadersMain {
 	private Aliens aliens;
 	private Score score;
 	private SetStage setStage;
-	private Background background;
+	private Background background, backgroundMain;
 	
 	public InvadersMain() {
 		setUpDisplay();
@@ -53,15 +52,22 @@ public class InvadersMain {
 		Effects.setUp();
 		setUpEntities();
 		setUpTimer();
+		
+		gameLoop();
+		
+		Sound.destroy();
+		Display.destroy();
+		System.exit(0);
+	}
+	
+	private void gameLoop() {
 		while (isRunnig) {
 			input();
 
 			glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			switch (score.state) {
 			case MAIN:
-				glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-				Printer.writeWarn(WIDTH/2 - 80, HEIGHT/2 - 50, "Space Invaders");
-				Printer.writeText(WIDTH/2 - 170, HEIGHT/2, "Press ENTER to play!");
+				backgroundMain.drawMain(getTime());
 				break;
 			case GAMEOVER:
 				render();
@@ -70,11 +76,9 @@ public class InvadersMain {
 			case END_STAGE:
 				background.draw();
 				player.draw(getTime());
-
+				score.waitEndGameStage(getTime());
 				if (Effects.listExplosion != null)
 					Effects.drawEffect(ObjectType.EXPLOSION, getTime());
-				
-				score.writeEndGameStage(getTime());
 				break;
 			case NEXT_STAGE:
 				score.setNewStage(getTime());
@@ -96,9 +100,6 @@ public class InvadersMain {
 				isRunnig = false;
 			}
 		}
-		Sound.destroy();
-		Display.destroy();
-		System.exit(0);
 	}
 	
 	private void setUpDisplay() {
@@ -126,11 +127,12 @@ public class InvadersMain {
 	}
 	
 	private void setUpEntities() {
-		player = new Player(WIDTH/2, HEIGHT-42, 32, 32, .2f, ObjectType.PLAYER);
+		player = new Player(WIDTH/2, HEIGHT-42, 32, 42, .2f, ObjectType.PLAYER);
 		score = new Score(getTime());
 		setStage = new SetStage();
-		aliens = new Aliens(setStage.getStage(score.getNumStage()));
-		background = new Background();
+		aliens = new Aliens();
+		background = new Background(BackgroundType.GAME);
+		backgroundMain = new Background(BackgroundType.MAIN);
 	}
 	
 	private void render() {
@@ -149,24 +151,26 @@ public class InvadersMain {
 		    if (Keyboard.getEventKeyState()) {
 		        switch (Keyboard.getEventKey()) {
 		             case Keyboard.KEY_SPACE:
-		            	 if (score.state.equals(Score.StateType.GAME)) {
+		            	 if (score.state.equals(StateType.GAME)) {
 			            	 player.launchBomb();
 			            	 score.increaseRockets();
 		            	 }
 		            	 break;
+			         case Keyboard.KEY_RETURN:
 		             case Keyboard.KEY_Y:
-		            	 if (score.state.equals(Score.StateType.GAMEOVER)) {
+		            	 if (score.state.equals(StateType.MAIN) 
+		            			 ||score.state.equals(StateType.GAMEOVER)) {
 			     			 score.initialize(getTime());
 	   		     			 aliens.createAliens(setStage.getStage(score.getNumStage()));
+	   		     			 score.state = StateType.GAME;
 		            	 }
 		            	 break;
 		             case Keyboard.KEY_N:
-		            	 if (score.state.equals(Score.StateType.GAMEOVER))
+		            	 if (score.state.equals(StateType.GAMEOVER))
 		            		 isRunnig = false;
 		            	 break;
-		             case Keyboard.KEY_RETURN:
-		            	 if (score.state.equals(StateType.MAIN))
-		            		 score.state = Score.StateType.GAME;
+		             case Keyboard.KEY_ESCAPE:
+	            		 isRunnig = false;
 		            	 break;
 		        }
 		    }
@@ -210,7 +214,6 @@ public class InvadersMain {
 		if (aliens.collison(player, CollisionType.BOMB_X_PLAYER)) {
 			score.decreaseLives();
 			Effects.createExplosion(player.getX() - player.getWidth()/2, player.getY() - player.getHeight(), 64, 64);
-			//score.addWarnHit(player.getX(), player.getY() - 20, "Hit!!", getTime());
 		}
 
 		//Enemy x Player
@@ -221,7 +224,7 @@ public class InvadersMain {
 		
 		//Next stage
 		if (aliens.getTotalNumberOfAliens() == 0) {
-			score.state = Score.StateType.END_STAGE;
+			score.state = StateType.END_STAGE;
 		}
 		
 		// Game Over
