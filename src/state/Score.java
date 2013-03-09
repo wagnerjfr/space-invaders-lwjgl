@@ -1,10 +1,14 @@
-package objects;
+package state;
 
-import static entities.WorldVariables.*;
+import static entities.WorldVariables.HEIGHT;
+import static entities.WorldVariables.WIDTH;
 
 import java.text.SimpleDateFormat;
 
+
 public class Score {
+	
+	public StateType state;
 	
 	private int numLives;
 	private int numPoints;
@@ -18,10 +22,10 @@ public class Score {
 	private static final String time = "Time: ";
 	
 	private long gameStartTime;
+	private long gameEndStageTime;
 	private long gameOverTime;
 	
 	private boolean isNewStage;
-	private boolean isGameOver;
 	private long timeToPrint;
 	
 	private final int gap = 100;
@@ -34,6 +38,8 @@ public class Score {
 	}
 
 	public void initialize(long time) {
+		state = StateType.MAIN;
+		
 		numLives = 5;
 		numPoints = 0;
 		numRockets = 0;
@@ -41,7 +47,8 @@ public class Score {
 		gameStartTime = time;
 		
 		isNewStage = false;
-		isGameOver = false;
+		
+		gameEndStageTime = 0;
 
 		setNewStage(time);
 	}
@@ -99,7 +106,7 @@ public class Score {
 		 * TIME
 		 */
 		Printer.writeText(5*gap, 0, time);
-		if (isGameOver)
+		if (state.equals(StateType.GAMEOVER))
 			Printer.writeNum(5*gap + 50, 0, getTime(gameOverTime - gameStartTime));
 		else
 			Printer.writeNum(5*gap + 50, 0, getTime(newTime - gameStartTime));
@@ -112,6 +119,7 @@ public class Score {
 				Printer.writeWarn(WIDTH/2 - 50, HEIGHT/2, "Stage " + numStage);
 			else 
 				isNewStage = false;
+				//state = StateType.GAME;
 		}
 		
 		if (warnHit != null) {
@@ -130,18 +138,28 @@ public class Score {
     }
 
     public void setGameOver(long time) {
-    	isGameOver = true;
+    	state = StateType.GAMEOVER;
     	gameOverTime = time;
     }
 
-	public boolean isGameOver() {
-		return isGameOver;
-	}
-	
 	public void writeGameOver() {
-		if (isGameOver) {
+		if (state.equals(StateType.GAMEOVER)) {
 			Printer.writeWarn(WIDTH/2 - 80, HEIGHT/2 - 50, "GAME OVER!");
 			Printer.writeText(WIDTH/2 - 170, HEIGHT/2, "Would you like to try again? (Y)es (N)o ");
+		}
+	}
+	
+	public void writeEndGameStage(long newTime) {
+		if (state.equals(StateType.END_STAGE)) {
+			if (gameEndStageTime == 0)
+				gameEndStageTime = newTime + 3000;
+			
+			if (newTime < gameEndStageTime)
+				Printer.writeText(WIDTH/2 - 170, HEIGHT/2, "Results:");
+			else {
+				gameEndStageTime = 0;
+				state = StateType.NEXT_STAGE;
+			}
 		}
 	}
 	
@@ -169,5 +187,9 @@ public class Score {
 			if (timeToShow > newtime)
 				Printer.writeText(x, y, text);
 		}
+	}
+	
+	public enum StateType {
+		MAIN, GAME, NEXT_STAGE, END_STAGE, GAMEOVER;
 	}
 }

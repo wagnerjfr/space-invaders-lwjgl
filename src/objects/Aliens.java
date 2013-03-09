@@ -2,7 +2,7 @@ package objects;
 
 import java.util.ArrayList;
 
-import objects.SetStage.Stage;
+import state.SetStage.Stage;
 import effects.Effects;
 import effects.SoundType;
 import entities.ObjectType;
