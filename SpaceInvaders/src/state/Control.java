@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import state.Printer.PrinterType;
 
 
-public class Score {
+public class Control {
 	
 	public StateType state;
 	
@@ -26,13 +26,14 @@ public class Score {
 	private long gameStartTime;
 	private long gameEndStageTime;
 	private long gameOverTime;
+	private long gameExitTime;
 	
 	private boolean isNewStage;
 	private long timeToPrint;
 	
 	private final int gap = 100;
 
-	public Score(long time) {
+	public Control(long time) {
 		Printer.setUpFonts();
 		state = StateType.MAIN;
 	}
@@ -45,6 +46,7 @@ public class Score {
 		gameStartTime = time;
 		isNewStage = false;
 		gameEndStageTime = 0;
+		gameExitTime = 0;
 
 		setNewStage(time);
 	}
@@ -73,7 +75,7 @@ public class Score {
 		numRockets++;
 	}
 		
-	public void draw(long newTime) {
+	public void drawScore(long newTime) {
 		/*
 		 * LIVES
 		 */
@@ -151,8 +153,38 @@ public class Score {
 			}
 		}
 	}
+
+	public boolean waitExit(long newTime) {
+		if (gameExitTime == 0)
+			gameExitTime = newTime + 1000;
+		
+		if (gameExitTime > newTime) {
+			Printer.write(WIDTH/2 - 170, HEIGHT/2, "Game closing...", PrinterType.YELLOW);
+			return true;
+		}
+		else
+			return false;
+	}
+
+	public void writeNextLevel() {
+		int space = 15;
+		
+		Printer.write(WIDTH/2 - 170, HEIGHT/2 - space, "CONGRATULATIONS!!", PrinterType.WARN);
+		
+		Printer.write(WIDTH/2 - 170, HEIGHT/2 + space, "Points: ", PrinterType.YELLOW);
+		Printer.write(WIDTH/2 - 170 + 60, HEIGHT/2 + space, String.valueOf(numPoints), PrinterType.WHITE);
+		
+		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 2*space, "Rockets: ", PrinterType.YELLOW);
+		Printer.write(WIDTH/2 - 170 + 75, HEIGHT/2 + 2*space, String.valueOf(numRockets), PrinterType.WHITE);
+		
+		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 3*space, "Time: ", PrinterType.YELLOW);
+		Printer.write(WIDTH/2 - 170 + 50, HEIGHT/2 + 3*space, getTime(gameOverTime - gameStartTime), PrinterType.WHITE);
+		
+		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 4*space, "You are ready for the next level of the game!", PrinterType.YELLOW);
+		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 6*space, "Press ESC to quit.", PrinterType.WHITE);
+	}
 	
 	public enum StateType {
-		MAIN, GAME, NEXT_STAGE, END_STAGE, GAMEOVER;
+		MAIN, GAME, NEXT_STAGE, END_STAGE, GAMEOVER, EXIT, CONGRATULATIONS;
 	}
 }
