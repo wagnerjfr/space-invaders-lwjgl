@@ -26,6 +26,7 @@ public class Bomb extends AbstractMoveableEntity {
 			break;
 		case BOMB:
 			setDY(speed);
+			Effects.playSound(SoundType.LAUNCH_BOMB);
 			break;
 		}
 	}

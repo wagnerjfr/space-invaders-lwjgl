@@ -19,6 +19,9 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
+import effects.Effects;
+import effects.SoundType;
+
 import state.Printer.PrinterType;
 
 public class Background {
@@ -32,6 +35,8 @@ public class Background {
 	
 	private long timeToShow = 0;
 	private long timeToBlank = 0;
+	
+	private boolean bPlaySound = false;
 	
 	public Background(BackgroundType type) {
 		this.type = type;
@@ -85,15 +90,20 @@ public class Background {
 
 		int gap = 15;
 		
+		if (!bPlaySound) {
+			Effects.playSound(SoundType.EXPLOSION_BOMB);
+			bPlaySound = true;
+		}
+		
 		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		draw();
 
-		Printer.write(WIDTH/2 - 170, HEIGHT/2 - 100, "Space Invaders", PrinterType.TITLE);
+		Printer.write(WIDTH/2 - 170, HEIGHT/2 - 100, "UFO Invasion", PrinterType.TITLE);
 		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 2*gap, "Arrow LEFT to go left", PrinterType.WHITE);
 		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 3*gap, "Arrow RIGHT to go right", PrinterType.WHITE);
 		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 4*gap, "SPACE to fire", PrinterType.WHITE);
-		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 5*gap, "ESC to exit", PrinterType.WHITE);
+		Printer.write(WIDTH/2 - 170, HEIGHT/2 + 5*gap, "ESC to quit", PrinterType.WHITE);
 		
 		if (timeToShow == 0 && timeToBlank == 0) {
 			timeToShow = newTime + RATE_SHOW;
@@ -111,7 +121,7 @@ public class Background {
 	}
 	
 	public enum BackgroundType {
-		MAIN("res/images/main.png"), GAME("res/images/fundo.png");
+		MAIN("res/images/main.png"), GAME("res/images/fundo.png"), EXIT("res/images/exit.png");
 		
 		public String location;
 		private BackgroundType(String location) {

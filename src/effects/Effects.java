@@ -24,7 +24,7 @@ public class Effects {
 	public static void playSound(SoundType type) {
 		Sound sound = new Sound(type);
 		listSound.add(sound);
-		sound.play();
+		sound.play(type);
 	}
 
 	public static void drawEffect(ObjectType type, long newTime) {

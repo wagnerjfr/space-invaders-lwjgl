@@ -12,10 +12,12 @@ import org.newdawn.slick.util.ResourceLoader;
 public class Sound {
 	
 	private Audio wavEffect;
+	
 	public Sound(SoundType type) {
 		init(type);
 	}
 	
+	//Nao eh usado..
 	public static void create() {
 		try {
 			AL.create();
@@ -27,12 +29,13 @@ public class Sound {
 	public void init(SoundType type) {
 		try {
 			wavEffect = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream(type.location));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void play() {
+	public void play(SoundType type) {
 		wavEffect.playAsSoundEffect(1.0f, 1.0f, false);
 		
 		// polling is required to allow streaming to get a chance to

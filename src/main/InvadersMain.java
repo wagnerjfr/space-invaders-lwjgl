@@ -28,8 +28,8 @@ import org.lwjgl.opengl.GL11;
 
 import state.Background;
 import state.Background.BackgroundType;
-import state.Score;
-import state.Score.StateType;
+import state.Control;
+import state.Control.StateType;
 import state.SetStage;
 import effects.Effects;
 import effects.Sound;
@@ -42,9 +42,9 @@ public class InvadersMain {
 	
 	private Player player;
 	private Aliens aliens;
-	private Score score;
+	private Control control;
 	private SetStage setStage;
-	private Background background, backgroundMain;
+	private Background background, backgroundMain, backgroundExit;
 	
 	public InvadersMain() {
 		setUpDisplay();
@@ -65,27 +65,37 @@ public class InvadersMain {
 			input();
 
 			glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			switch (score.state) {
+			switch (control.state) {
 			case MAIN:
 				backgroundMain.drawMain(getTime());
 				break;
 			case GAMEOVER:
 				render();
-				score.writeGameOver();
+				control.writeGameOver();
 				break;
 			case END_STAGE:
 				background.draw();
 				player.draw(getTime());
-				score.waitEndGameStage(getTime());
+				control.drawScore(getTime());
+				control.waitEndGameStage(getTime());
 				if (Effects.listExplosion != null)
 					Effects.drawEffect(ObjectType.EXPLOSION, getTime());
 				break;
 			case NEXT_STAGE:
-				score.setNewStage(getTime());
-				aliens.createAliens(setStage.getStage(score.getNumStage()));
+				control.setNewStage(getTime());
+				aliens.createAliens(setStage.getStage(control.getNumStage()));
 				Effects.clear();
 				render();
-				score.state = StateType.GAME;
+				control.state = StateType.GAME;
+				break;
+			case EXIT:
+				backgroundExit.draw();
+				if (!control.waitExit(getTime()))
+					isRunnig = false;
+				break;
+			case CONGRATULATIONS:
+				backgroundMain.draw();
+				control.writeNextLevel();
 				break;
 			default:
 				render();
@@ -94,10 +104,10 @@ public class InvadersMain {
 			}
 			
 			Display.update();
-			Display.sync(250);
+			Display.sync(150);
 			
 			if (Display.isCloseRequested()) {
-				isRunnig = false;
+				control.state = StateType.EXIT;
 			}
 		}
 	}
@@ -128,11 +138,12 @@ public class InvadersMain {
 	
 	private void setUpEntities() {
 		player = new Player(WIDTH/2, HEIGHT-42, 32, 42, .2f, ObjectType.PLAYER);
-		score = new Score(getTime());
+		control = new Control(getTime());
 		setStage = new SetStage();
 		aliens = new Aliens();
 		background = new Background(BackgroundType.GAME);
 		backgroundMain = new Background(BackgroundType.MAIN);
+		backgroundExit = new Background(BackgroundType.EXIT);
 	}
 	
 	private void render() {
@@ -140,7 +151,7 @@ public class InvadersMain {
 		background.draw();
 		player.draw(getTime());
 		aliens.draw(getTime());
-		score.draw(getTime());
+		control.drawScore(getTime());
 		
 		if (Effects.listExplosion != null)
 			Effects.drawEffect(ObjectType.EXPLOSION, getTime());
@@ -151,26 +162,27 @@ public class InvadersMain {
 		    if (Keyboard.getEventKeyState()) {
 		        switch (Keyboard.getEventKey()) {
 		             case Keyboard.KEY_SPACE:
-		            	 if (score.state.equals(StateType.GAME)) {
+		            	 if (control.state.equals(StateType.GAME)) {
 			            	 player.launchBomb();
-			            	 score.increaseRockets();
+			            	 control.increaseRockets();
 		            	 }
 		            	 break;
 			         case Keyboard.KEY_RETURN:
 		             case Keyboard.KEY_Y:
-		            	 if (score.state.equals(StateType.MAIN) 
-		            			 ||score.state.equals(StateType.GAMEOVER)) {
-			     			 score.initialize(getTime());
-	   		     			 aliens.createAliens(setStage.getStage(score.getNumStage()));
-	   		     			 score.state = StateType.GAME;
+		            	 if (control.state.equals(StateType.MAIN) 
+		            			 ||control.state.equals(StateType.GAMEOVER)) {
+			     			 control.initialize(getTime());
+	   		     			 aliens.createAliens(setStage.getStage(control.getNumStage()));
+	   		     			 control.state = StateType.GAME;
 		            	 }
 		            	 break;
 		             case Keyboard.KEY_N:
-		            	 if (score.state.equals(StateType.GAMEOVER))
+		            	 if (control.state.equals(StateType.GAMEOVER))
 		            		 isRunnig = false;
 		            	 break;
 		             case Keyboard.KEY_ESCAPE:
-	            		 isRunnig = false;
+		            	 control.state = StateType.EXIT;
+	            		 //isRunnig = false;
 		            	 break;
 		        }
 		    }
@@ -207,29 +219,35 @@ public class InvadersMain {
 		//Verify Collision
 		//Rocket x Enemy
 		if (aliens.collison(player, CollisionType.ROCKET_X_ENEMY)) {
-			score.increasePoints();
+			control.increasePoints();
 		}
 
 		//Bomb x Player
 		if (aliens.collison(player, CollisionType.BOMB_X_PLAYER)) {
-			score.decreaseLives();
+			control.decreaseLives();
 			Effects.createExplosion(player.getX() - player.getWidth()/2, player.getY() - player.getHeight(), 64, 64);
 		}
 
 		//Enemy x Player
 		if (aliens.collison(player, CollisionType.ENEMY_X_PLAYER)) {
-			score.increasePoints();
-			score.decreaseLives();
+			control.increasePoints();
+			control.decreaseLives();
 		}
 		
 		//Next stage
 		if (aliens.getTotalNumberOfAliens() == 0) {
-			score.state = StateType.END_STAGE;
+			control.state = StateType.END_STAGE;
+			
+			//End of the stages.. next level
+			if (control.getNumStage() == 10) {
+				control.setGameOver(getTime());
+				control.state = StateType.CONGRATULATIONS;
+			}
 		}
 		
 		// Game Over
-		if ((aliens.getLowestEnemy() >= HEIGHT - IMAGE_HEIGHT) || (score.getNumLives() == 0)) {
-			score.setGameOver(getTime());
+		if ((aliens.getLowestEnemy() >= HEIGHT - IMAGE_HEIGHT) || (control.getNumLives() == 0)) {
+			control.setGameOver(getTime());
 			Effects.clear();
 		}
 	}
