@@ -115,7 +115,7 @@ public class InvadersMain {
 	private void setUpDisplay() {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.setTitle("Space Invaders 2D");
+			Display.setTitle("UFO Invasion Demo");
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
