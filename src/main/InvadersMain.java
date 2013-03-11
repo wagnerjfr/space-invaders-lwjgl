@@ -176,13 +176,12 @@ public class InvadersMain {
 	   		     			 control.state = StateType.GAME;
 		            	 }
 		            	 break;
+		             case Keyboard.KEY_ESCAPE:
 		             case Keyboard.KEY_N:
 		            	 if (control.state.equals(StateType.GAMEOVER))
-		            		 isRunnig = false;
-		            	 break;
-		             case Keyboard.KEY_ESCAPE:
-		            	 control.state = StateType.EXIT;
-	            		 //isRunnig = false;
+		            		 control.state = StateType.EXIT;
+		            	 else
+			            	 control.state = StateType.EXIT;
 		            	 break;
 		        }
 		    }
