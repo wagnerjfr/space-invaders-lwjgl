@@ -39,26 +39,26 @@ public class Enemy extends AbstractFigther {
 			if (x >= WIDTH - width && Aliens.isMovingRight) {
 				Aliens.isMovingRight = false;
 				Aliens.isMovingDown = true;
-				//moveLeft();  //Nao pode mover pois eh o ultimo da linha, atualiza no prox. loop
+				//moveLeft();  //can't move because it's the last of the row, update in the next loop
 			}
 			else if (x <= 0 && !Aliens.isMovingRight) {
 				Aliens.isMovingRight = true;
 				Aliens.isMovingDown = true;
-				moveRight(); //Ja pode mover pois eh o 1st da fila, o restante eh atualizada em seguida
+				moveRight();
 			}
 			else if (Aliens.isMovingRight)
 				moveRight();
 			else 
 				moveLeft();
 			
-			//Cria tempo para lancar a bomba
+			//Starts clock to bomb launch
 			if (!listBomb.get(0).isLaunched() && !reload) {
 				createTimeBombLaunch(systime);
 				reload = true;
 			}
 		}
 		
-		//Logica para o lancamento das bombas
+		//Logic to bomb launch
 		updateBomb(delta, ObjectType.BOMB);
 		
 		if ((timeToLaunch < systime) && reload) {
