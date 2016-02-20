@@ -2,7 +2,6 @@ package effects;
 
 import java.io.IOException;
 
-import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
@@ -15,15 +14,6 @@ public class Sound {
 	
 	public Sound(SoundType type) {
 		init(type);
-	}
-	
-	//Nao eh usado..
-	public static void create() {
-		try {
-			AL.create();
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void init(SoundType type) {

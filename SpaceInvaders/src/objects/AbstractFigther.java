@@ -60,6 +60,7 @@ public abstract class AbstractFigther extends AbstractMoveableEntity {
 		}
 	}
 	
+	@SuppressWarnings("incomplete-switch")
 	public void updateBomb(int delta, ObjectType type) {
 		for (Bomb bomb : listBomb) {
 			if (bomb.isLaunched()) {

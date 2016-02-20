@@ -17,7 +17,7 @@ public class Player extends AbstractFigther {
 		if (x < 0) 
 			x = 0;
 		else if (x + width > WIDTH)
-			x = WIDTH - width; //WIDTH (tela) - width(objeto)
+			x = WIDTH - width; //WIDTH (screen) - width(object)
 		
 		updateBomb(delta, ObjectType.ROCKET);
 	}
@@ -32,7 +32,7 @@ public class Player extends AbstractFigther {
 	}
 	
 	/**
-	 * Verify disponibility to launch new Rocket
+	 * Verify availability to launch new Rocket
 	 * @return
 	 */
 	private int getDispoBomb() {
