@@ -38,7 +38,7 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 6) Right click on the "JRE System Library" of your project, and click "Build Path" -> "Configure Build Path".
 7) Include the LWJGL native libraries to your project in the Build Path Configured by clicking the "Native library location" which can be seen in the JRE System Library dropdown menu.
 8) Click on "Edit...", which will be the only button is enabled in that general area.
-9) A file explorer will pop up. Navigate to the location "workspace" of the LWJGL native folder.
+9) A file explorer will pop up. Select "Workspace..."
 10) The location is in the project folder inside the folder lib/natives. Select the folder according to your Operational System.
 11) Click in Apply and Close Button
 12) Right click in the project folder the "Run As" -> "Java Application"
