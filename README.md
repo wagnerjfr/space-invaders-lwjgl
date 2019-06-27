@@ -4,8 +4,8 @@
 **UFO Invasion** _(Free Web Game)_ is a better version of the traditional **"Space Invaders"**. UFO Invasion is a two-dimensional 
 shooter game in which the player controls an space aircraft by moving it horizontally across the bottom of the screen and 
 firing at descending aliens. The aim is to defeat all aliens that move back and forth across the screen as they advance 
-towards the bottom of the screen. The player defeats an alien by shooting it with rockets launched by the space aircraft. 
-Defeating the aliens brings another wave that is more difficult, a loop which can continue indefinitely!
+towards the bottom of the screen (*the Earth planet!*). The player fights against an alien by shooting it with rockets launched by the space aircraft. 
+Defeating the aliens brings another wave that is more difficult, in a loop which can continue indefinitely!
 
 **_Fly through space, defend your planet, destroy aliens.. Have fun!_**
 
