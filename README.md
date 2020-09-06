@@ -1,4 +1,4 @@
-### Space-Invaders-LWJGL
+# Space-Invaders-LWJGL
 ------
 
 **UFO Invasion** _(Free Web Game)_ is a better version of the traditional **"Space Invaders"**. UFO Invasion is a two-dimensional 
@@ -11,7 +11,7 @@ Defeating the aliens brings another wave that is more difficult, in a loop which
 
 >_NOTE: the source code available is for the Java + LWJGL version._
 
-#### Links:
+## Links:
 
 [**Oficial WEB Game - UFO Invasion**](https://sites.google.com/site/ufoinvasiongame/)
 
@@ -20,19 +20,42 @@ Defeating the aliens brings another wave that is more difficult, in a loop which
 [**History of the game**](https://www.linkedin.com/pulse/taking-advantage-missed-opportunity-publish-my-first-online-franchin/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_post_details%3BpgCweIyaQwm3Qe88n3hZsA%3D%3D)
 
 ----
-#### Videos:
-##### YouTube Video Oficial - Java + PlayN
+## Videos:
+### YouTube Video Oficial - Java + PlayN
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=QUu4ARi1Sn8
 " target="_blank"><img src="http://img.youtube.com/vi/QUu4ARi1Sn8/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
-##### YouTube Video - Java + LWJGL
+### YouTube Video - Java + LWJGL
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=GUygut8MPDo
 " target="_blank"><img src="http://img.youtube.com/vi/GUygut8MPDo/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 ----
-#### Installing in Eclipse:
+## Docker
+
+Coming soon..
+
+----
+## Fat Java Jar
+
+### Linux
+There is a java jar available to be executed.
+
+Run the command below:
+```
+$ java -jar docker/Fat_UFO_Invasion.jar
+```
+
+### Mac and Windows
+
+For Mac and Windows, a new Fat jar need to be built.
+
+Follow the instructions in `docker/README.md` file.
+
+----
+## Installing in Eclipse:
+
 1) Clone the project: 
 ```
 git clone https://github.com/wagnerjfr/space-invaders-lwjgl.git
