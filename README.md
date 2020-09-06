@@ -34,7 +34,19 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 ----
 ## 1. Running with Docker
 
-Coming soon..
+### 1.1 Pulling the image from DockerHub and launching the container
+```
+Coming soon
+```
+
+### 1.2 Creating a local Docker images
+:warning: Not working
+
+If the Fat jar (*Section 2 below*) is running fine in your environment, it's possbile to build a local Docker image by running:
+
+```
+$ docker build -t space-invaders-lwjgl -f docker/Dockerfile .
+```
 
 ----
 ## 2. Running as Fat Java Jar
