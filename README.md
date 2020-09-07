@@ -1,4 +1,4 @@
-### Space-Invaders-LWJGL
+# Space-Invaders-LWJGL
 ------
 
 **UFO Invasion** _(Free Web Game)_ is a better version of the traditional **"Space Invaders"**. UFO Invasion is a two-dimensional 
@@ -11,7 +11,7 @@ Defeating the aliens brings another wave that is more difficult, in a loop which
 
 >_NOTE: the source code available is for the Java + LWJGL version._
 
-#### Links:
+## Links:
 
 [**Oficial WEB Game - UFO Invasion**](https://sites.google.com/site/ufoinvasiongame/)
 
@@ -20,24 +20,59 @@ Defeating the aliens brings another wave that is more difficult, in a loop which
 [**History of the game**](https://www.linkedin.com/pulse/taking-advantage-missed-opportunity-publish-my-first-online-franchin/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_post_details%3BpgCweIyaQwm3Qe88n3hZsA%3D%3D)
 
 ----
-#### Videos:
-##### YouTube Video Oficial - Java + PlayN
+## Videos:
+### YouTube Video Oficial - Java + PlayN
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=QUu4ARi1Sn8
 " target="_blank"><img src="http://img.youtube.com/vi/QUu4ARi1Sn8/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
-##### YouTube Video - Java + LWJGL
+### YouTube Video - Java + LWJGL
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=GUygut8MPDo
 " target="_blank"><img src="http://img.youtube.com/vi/GUygut8MPDo/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 ----
-#### Installing in Eclipse:
+## 1. Running with Docker
+
+### 1.1 Pulling the image from DockerHub and launching the container
+```
+Coming soon
+```
+
+### 1.2 Creating a local Docker images
+:warning: Not working
+
+If the Fat jar (*Section 2 below*) is running fine in your environment, it's possbile to build a local Docker image by running:
+
+```
+$ docker build -t space-invaders-lwjgl -f docker/Dockerfile .
+```
+
+----
+## 2. Running as Fat Java Jar
+
+### Linux
+There is a java jar available to be executed.
+
+Run the command below:
+```
+$ java -jar docker/Fat_UFO_Invasion.jar
+```
+
+### Mac and Windows
+
+For Mac and Windows, a new Fat jar need to be built.
+
+Follow the instructions in [`docker/README.md`]() file.
+
+----
+## 3. Installing in Eclipse:
+
 1) Clone the project: 
 ```
 git clone https://github.com/wagnerjfr/space-invaders-lwjgl.git
 ```
-2) Go into Eclipse then click **"File" -> "New" -> "Java Project"**
+2) Go into Eclipse then click **"File" ⭢ "New" ⭢ "Java Project"**
 
 3) Uncheck "use default location" and browse the project folder just cloned
 
@@ -45,7 +80,7 @@ git clone https://github.com/wagnerjfr/space-invaders-lwjgl.git
 
 5) Expand the project so it's possible to see src, lib and res folders.
 
-6) Right click on the **"JRE System Library"** of your project, and click **"Build Path" -> "Configure Build Path"**.
+6) Right click on the **"JRE System Library"** of your project, and click **"Build Path" ⭢ "Configure Build Path"**.
 ![alt text](https://github.com/wagnerjfr/space-invaders-lwjgl/blob/master/res/readme/setup0.png)
 
 7) Include the LWJGL native libraries to your project in the Build Path Configured by clicking the **"Native library location"** which can be seen in the JRE System Library dropdown menu.
@@ -61,7 +96,7 @@ git clone https://github.com/wagnerjfr/space-invaders-lwjgl.git
 
 11) Click in **"Apply and Close"** Button
 
-12) Right click in the project folder the **"Run As" -> "Java Application"**
+12) Right click in the project folder the **"Run As" ⭢ "Java Application"**
 
 13) A list of class files will appear, choose **"InvadersMain - main"**, and click in **"OK"**
 ![alt text](https://github.com/wagnerjfr/space-invaders-lwjgl/blob/master/res/readme/setup4.png)
