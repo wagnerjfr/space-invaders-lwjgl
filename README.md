@@ -9,6 +9,8 @@ Defeating the aliens brings another wave that is more difficult, in a loop which
 
 **_Fly through space, defend your planet, destroy aliens.. Have fun!_**
 
+<img align="center" alt="GIF" src="https://github.com/wagnerjfr/space-invaders-lwjgl/blob/master/res/ufo.gif?raw=true" width="500" height="320" />
+
 >_NOTE: the source code available is for the Java + LWJGL version._
 
 ## Links:
