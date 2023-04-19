@@ -17,9 +17,7 @@ Defeating the aliens brings another wave that is more difficult, in a loop which
 
 [**Oficial WEB Game - UFO Invasion**](https://sites.google.com/view/ufoinvasiongame)
 
-[**Available on Chrome Web Store**](https://chrome.google.com/webstore/detail/ufo-invasion/bclabmhmbdonaejglmfohahicllifhgf)
-
-[**History of the game**](https://www.linkedin.com/pulse/taking-advantage-missed-opportunity-publish-my-first-online-franchin/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_post_details%3BpgCweIyaQwm3Qe88n3hZsA%3D%3D)
+[**History of the game**](https://medium.com/@wagner.franchin/taking-advantage-of-a-missed-opportunity-to-publish-my-first-online-game-88316ff14798)
 
 ----
 ## Videos:
